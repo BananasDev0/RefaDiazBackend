@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import productRouter from './routes/productRoutes.js';
+import buildRouter from './routes/index.js';
 
 const app = express();
 
@@ -13,12 +13,8 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 // Utiliza las rutas en tu aplicación Express
-app.use('/api', productRouter);
+buildRouter(app)
 
 app.listen(3000, () => {
   console.log('El servidor está corriendo en el puerto 3000');
-});
-
-app.get('/', (req, res) => {
-  res.send('Hola Mundo con Express!');
 });
