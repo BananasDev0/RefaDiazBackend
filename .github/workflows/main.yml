@@ -1,0 +1,36 @@
+name: Despliegue en EC2
+
+on:
+  push:
+    branches:
+      - dev # Cambia 'main' por la rama que desees
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Copiar archivos al servidor
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "."
+          target: "projects/RefaDiaz"
+
+      - name: Ejecutar comandos remotos
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd projects/RefaDiaz
+            npm install
+            pm2 restart RefaDiazAPI
