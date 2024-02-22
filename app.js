@@ -3,7 +3,6 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import buildRouter from './routes/index.js';
-import brandRouter from './routes/brandRoutes.js'; //enrutador de marcas
 import sequelize from './config/dbConnection.js';
 
 const app = express();
