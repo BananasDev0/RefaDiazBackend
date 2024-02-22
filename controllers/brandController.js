@@ -1,4 +1,4 @@
-import { createBrand, getAll } from "../services/brandService.js";
+import { createBrand } from "../services/brandService.js";
 
 const createNewBrand = async(req, res) => {
     try {
@@ -10,13 +10,4 @@ const createNewBrand = async(req, res) => {
     }
 }
 
-const getAllBrands = async (req, res) => {
-    try {
-        const brands = await getAll();
-        res.json(brands);
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-}
-
-export { createNewBrand, getAllBrands };
+export { createNewBrand };
