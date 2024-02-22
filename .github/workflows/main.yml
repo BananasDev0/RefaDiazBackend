@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "."
-          target: "/projects/RefaDiaz"
+          target: "projects/RefaDiaz"
 
       - name: Ejecutar comandos remotos
         uses: appleboy/ssh-action@master
@@ -31,5 +31,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /projects/RefaDiaz
+            cd projects/RefaDiaz
             npm install
