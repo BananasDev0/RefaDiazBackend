@@ -7,4 +7,15 @@ const getAll = async () => {
     return [product];
 };
 
-export { getAll };
+const createProduct = async(productData) => {
+    try {
+        const product = await Product.create(productData);
+        console.log('Producto creado: ', product.toJSON());
+        return product;
+    } catch (error) {
+        console.log('Error al crear un producto: ', error);
+        throw error;
+    }
+}
+
+export { getAll, createProduct };

@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import buildRouter from './routes/index.js';
 import sequelize from './config/dbConnection.js';
+import { createBrand } from './services/brandService.js';
 
 const app = express();
 
@@ -27,3 +28,7 @@ try {
 } catch (error) {
   console.error('No se puedo conectar a la base de datos: ', error);
 }
+//pruenba
+createBrand({
+  brandName: 'FORD'
+});
