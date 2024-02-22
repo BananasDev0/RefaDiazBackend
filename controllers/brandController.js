@@ -14,8 +14,7 @@ const createNewBrand = async(req, res) => {
     try {
         const brandData = req.body;
         const brand = await Brand.create(brandData);
-        console.log('Producto creado: ', brand.toJSON());
-        res.status(200).send('Marca creada');
+        res.status(200).send(brand.toJSON());
     } catch (error) {
         res.status(500).send(error.message);
     }
