@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import buildRouter from './routes/index.js';
+import sequelize from './config/dbConnection.js';
 
 const app = express();
 
@@ -18,3 +19,11 @@ buildRouter(app)
 app.listen(3000, () => {
   console.log('El servidor está corriendo en el puerto 3000');
 });
+
+//prueba conexion a la bdd
+try {
+  sequelize.authenticate();
+  console.log('Conexion a la base de datos, exitosa');
+} catch (error) {
+  console.error('No se puedo conectar a la base de datos: ', error);
+}
