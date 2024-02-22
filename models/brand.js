@@ -13,6 +13,9 @@ Brand.init(
         brandName: {
             type: DataTypes.STRING,
             field: 'brand_name'
+        },
+        active: {
+            type: DataTypes.INTEGER
         }
     },
     {
