@@ -8,19 +8,6 @@ CREATE TABLE control_fields(
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE OR REPLACE FUNCTION control_fields_updated_at()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER control_fields_trigger
-BEFORE UPDATE ON control_fields
-FOR EACH ROW
-EXECUTE FUNCTION control_fields_updated_at();
-
 
 CREATE TABLE brand(
     id SERIAL PRIMARY KEY,
