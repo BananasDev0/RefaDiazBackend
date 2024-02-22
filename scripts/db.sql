@@ -8,7 +8,6 @@ CREATE TABLE control_fields(
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-
 CREATE TABLE brand(
     id SERIAL PRIMARY KEY,
     brand_name VARCHAR(300)
