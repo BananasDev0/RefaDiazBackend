@@ -19,7 +19,9 @@ Brand.init(
         sequelize: sequelize, // Aquí pasas tu instancia de Sequelize configurada
         modelName: 'brand', // El nombre del modelo en singular
         tableName: 'brand', // El nombre de la tabla en la base de datos
-        timestamps: false //es para agregar created_at, update_at, checar con el equipo
+        timestamps: true, //es para agregar created_at, update_at, checar con el equipo,
+        updatedAt: 'updated_at',
+        createdAt: 'created_at'
     }
 );
 export default Brand;

@@ -28,7 +28,3 @@ try {
 } catch (error) {
   console.error('No se puedo conectar a la base de datos: ', error);
 }
-//pruenba
-createBrand({
-  brandName: 'FORD'
-});
