@@ -1,12 +1,5 @@
 import Brand from "../models/brand.js";
 
-const getAll = async () => {
-    let brand = new Brand();
-    brand.id = 2;
-    brand.name = 'radiador chido'
-    return [brand];
-};
-
 const createBrand = async(brandData) => {
     try {
         const brand = await Brand.create(brandData);
@@ -18,4 +11,4 @@ const createBrand = async(brandData) => {
     }
 }
 
-export { getAll, createBrand };
+export { createBrand };
