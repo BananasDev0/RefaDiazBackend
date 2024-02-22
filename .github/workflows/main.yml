@@ -20,7 +20,6 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          passphrase: ${{secrets.EC2_PASSPHRASE}}
           source: "."
           target: "/projects/RefaDiaz"
 
