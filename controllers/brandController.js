@@ -6,7 +6,7 @@ const getAll = async (req, res) => {
         res.status(200).send(brands); // Envía todas las marcas como respuesta
     } catch (error) {
         console.error('Error al recuperar las marcas:', error);
-        res.status(500).send('Error interno del servidor');
+        res.status(500).send(error.message);
     }
 }
 const getBrand = async(req, res) => {
@@ -19,8 +19,8 @@ const getBrand = async(req, res) => {
         });
        
         if(!brand) {
-            res.status(404).send('No existe esa Brand');
-            console.log("no existe");
+            res.status(404).send('Resource not found.');
+            console.log("Resource not found.");
         } else {
             res.status(200).send(brand);    
         }
@@ -48,7 +48,7 @@ const updateBrand = async(req, res) => {
         const brand = Brand.findByPk(brandId);
 
         if(!brand) {
-            res.status(404).send("No existe tal brand");
+            res.status(404).send("Resource not found.");
         } else {
             await brand.update(updatedData);
             res.status(200).send(brand);
@@ -56,7 +56,7 @@ const updateBrand = async(req, res) => {
 
     } catch (error) {
         console.error('Error al actualizar la marca:', error);
-        res.status(500).send('Error interno del servidor');
+        res.status(500).send(error.message);
     }
 }
 
@@ -67,7 +67,7 @@ const deleteBrand = async(req, res) => {
         const brand = await Brand.findByPk(brandId)
 
         if(!brand) {
-            res.status(404).send('brand not found');
+            res.status(404).send('Resource not found.');
         } else {
             await brand.destroy();
             res.status(204).send();
