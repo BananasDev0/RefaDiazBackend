@@ -40,14 +40,14 @@ const createNewBrand = async(req, res) => {
     }
 }
 
-const updateBrand = async(req, res) => {
+const updateBrand = async (req, res) => {
     try {
         const brandId = req.params.id;
         const updatedData = req.body;
 
-        const brand = Brand.findByPk(brandId);
+        const brand = await Brand.findByPk(brandId);
 
-        if(!brand) {
+        if (!brand) {
             res.status(404).send("Resource not found.");
         } else {
             await brand.update(updatedData);
@@ -59,7 +59,6 @@ const updateBrand = async(req, res) => {
         res.status(500).send(error.message);
     }
 }
-
 
 const deleteBrand = async(req, res) => {
     try {
