@@ -33,7 +33,7 @@ const createProduct = async(req, res) => {
     try{
         const productData = req.body;
         const product = await Product.create(productData);
-        res.status(200).send(product);
+        res.status(200).send(product.toJSON());
     }catch (error) {
         res.status(500).send(error.message);
     }
@@ -48,8 +48,8 @@ const updateProduct = async(req, res) => {
         if(!product) {
             res.status(404).send("Resource not found.")
         } else {
-            await brand.update(updatedData);
-            res.status(204).send(brand)
+            await product.update(updatedData);
+            res.status(204).send(product);
         }
 
     } catch(error) {
