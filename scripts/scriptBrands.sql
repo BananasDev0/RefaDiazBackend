@@ -31,4 +31,8 @@ INSERT INTO brand (brand_name) VALUES
     ('Datsun'),
     ('Lamborghini'),
     ('Mitsubishi'),
-    ('Ferrari');
+    ('Ferrari'),
+    ('Seat'),
+    ('Peugot'),
+    ('Suzuki'),
+    ('Mazda');
