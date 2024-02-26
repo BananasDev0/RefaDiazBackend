@@ -102,8 +102,10 @@ CREATE TABLE person(
     address VARCHAR(300)
 ) INHERITS (control_fields);
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE user(
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     person_id INT,
     FOREIGN KEY (person_id) REFERENCES person(id)
 ) INHERITS (control_fields);
