@@ -15,11 +15,17 @@ CREATE TABLE brand(
 
 CREATE TABLE product(
     id SERIAL PRIMARY KEY,
-    product_Name VARCHAR(300),
+    product_name VARCHAR(300),
     dpi VARCHAR(300),
     brand_id INT,
     image_url VARCHAR(5000),
     FOREIGN KEY (brand_id) REFERENCES brand(id)
+) INHERITS (control_fields);
+
+CREATE TABLE radiator(
+    id SERIAL PRIMARY KEY,
+    product_id INT,
+    FOREIGN KEY (product_id) REFERENCES product(id)
 ) INHERITS (control_fields);
 
 CREATE TABLE price_type(
@@ -84,4 +90,20 @@ CREATE TABLE client_vehicle(
     comments VARCHAR(700),
     FOREIGN KEY (vehicle_id) REFERENCES vehicle(id),
     FOREIGN KEY (client_id) REFERENCES client(id)
+) INHERITS (control_fields);
+
+CREATE TABLE person(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200),
+    last_name VARCHAR(200),
+    birth_date DATE,
+    email VARCHAR(300),
+    phone_number VARCHAR(300),
+    address VARCHAR(300)
+) INHERITS (control_fields);
+
+CREATE TABLE user(
+    id SERIAL PRIMARY KEY,
+    person_id INT,
+    FOREIGN KEY (person_id) REFERENCES person(id)
 ) INHERITS (control_fields);
