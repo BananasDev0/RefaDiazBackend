@@ -1,7 +1,7 @@
 module.exports = {
     apps : [
         {
-          name: "RefaDiazApp",
+          name: "RefaDiazAPI",
           script: "./app.js",
           watch: true,
           env: {

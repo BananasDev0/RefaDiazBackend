@@ -1,9 +1,9 @@
-name: Despliegue en EC2
+name: [DEV] Despliegue en EC2
 
 on:
   push:
     branches:
-      - dev # Cambia 'main' por la rama que desees
+      - dev
 
 jobs:
   deploy:
@@ -33,5 +33,4 @@ jobs:
           script: |
             cd projects/RefaDiaz
             npm install
-            pm2 stop RefaDiazAPI
-            NODE_ENV=development pm2 start RefaDiazAPI
+            pm2 restart ecosystem.config.js
