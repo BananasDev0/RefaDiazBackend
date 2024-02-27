@@ -1,4 +1,4 @@
-name: [DEV] Despliegue en EC2
+name: DEV Despliegue en EC2
 
 on:
   push:
