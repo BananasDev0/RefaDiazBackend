@@ -33,4 +33,5 @@ jobs:
           script: |
             cd projects/RefaDiaz
             npm install
-            NODE_ENV=development pm2 restart RefaDiazAPI
+            pm2 stop RefaDiazAPI
+            NODE_ENV=development pm2 start RefaDiazAPI
