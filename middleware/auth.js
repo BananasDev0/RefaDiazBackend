@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const serviceAccount = require(process.env.FIREBASE_JSON_ADMIN);
+const serviceAccount = process.env.FIREBASE_JSON_ADMIN;
 
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount)

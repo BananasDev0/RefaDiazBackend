@@ -13,5 +13,4 @@ brandRouter.put('/brand/:id', firebaseTokenVerification, updateBrand);
 
 brandRouter.delete('/brand/:id', firebaseTokenVerification, deleteBrand);
 
-// Exporta el router
 export default brandRouter;
