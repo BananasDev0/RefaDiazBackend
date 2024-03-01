@@ -1,5 +1,6 @@
 import firebaseAdmin from 'firebase-admin';
 import dotenv from 'dotenv';
+
 dotenv.config({
     path: `env.${process.env.NODE_ENV}`
 });
@@ -11,7 +12,7 @@ firebaseAdmin.initializeApp({
 });
 
 const firebaseTokenVerification = async (req, res, next) => {
-    const token = req.header('x-auth-token');
+    const token = req.header('Authorization');
 
     if (!token) {
         return res.status(401).send("No hay token añadido.");

@@ -1,6 +1,5 @@
 import express from 'express';
 import { createNewBrand, getAll, getBrand, deleteBrand, updateBrand } from '../controllers/brandController.js';
-import firebaseTokenVerification from '../middleware/auth.js';
 
 const brandRouter = express.Router();
 

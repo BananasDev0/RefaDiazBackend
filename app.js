@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true })); // Para parsear application/x-w
 app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
-app.use(firebaseTokenVerification());
+app.use(firebaseTokenVerification);
 
 // Utiliza las rutas en tu aplicación Express
 buildRouter(app)
