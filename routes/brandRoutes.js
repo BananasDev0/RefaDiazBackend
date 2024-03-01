@@ -4,13 +4,13 @@ import firebaseTokenVerification from '../middleware/auth.js';
 
 const brandRouter = express.Router();
 
-brandRouter.get('/brands', firebaseTokenVerification, getAll);
-brandRouter.get('/brand/:id', firebaseTokenVerification, getBrand);
+brandRouter.get('/brands', getAll);
+brandRouter.get('/brand/:id', getBrand);
 
-brandRouter.post('/brand', firebaseTokenVerification, createNewBrand);
+brandRouter.post('/brand', createNewBrand);
 
-brandRouter.put('/brand/:id', firebaseTokenVerification, updateBrand);
+brandRouter.put('/brand/:id', updateBrand);
 
-brandRouter.delete('/brand/:id', firebaseTokenVerification, deleteBrand);
+brandRouter.delete('/brand/:id', deleteBrand);
 
 export default brandRouter;
