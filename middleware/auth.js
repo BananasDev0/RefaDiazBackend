@@ -2,7 +2,7 @@ import firebaseAdmin from 'firebase-admin';
 import dotenv from 'dotenv';
 
 dotenv.config({
-    path: `env.${process.env.NODE_ENV}`
+    path: `.env.${process.env.NODE_ENV}`
 });
 
 const serviceAccount = process.env.FIREBASE_JSON_ADMIN;
