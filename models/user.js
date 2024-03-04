@@ -9,6 +9,7 @@ User.init(
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
-        }
+        },
+        
     }
 )
