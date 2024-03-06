@@ -71,16 +71,6 @@ CREATE TABLE client(
     comments VARCHAR(500) 
 ) INHERITS (control_fields);
 
-CREATE TABLE client_vehicle(
-    vehicle_id INT NOT NULL,
-    client_id INT NOT NULL,
-    color VARCHAR(300),
-    plate VARCHAR(600),
-    comments VARCHAR(700),
-    FOREIGN KEY (vehicle_id) REFERENCES vehicle(id),
-    FOREIGN KEY (client_id) REFERENCES client(id)
-) INHERITS (control_fields);
-
 CREATE TABLE person(
     id SERIAL PRIMARY KEY,
     name VARCHAR(200),
@@ -99,7 +89,7 @@ CREATE TABLE "user"(
     FOREIGN KEY (person_id) REFERENCES person(id)
 ) INHERITS (control_fields);
 
-CREATE TABLE VECHICLE__MODEL(
+CREATE TABLE vehicle_model(
     id SERIAL PRIMARY KEY,
     version VARCHAR(300),
     brand_id INT,
@@ -113,4 +103,14 @@ CREATE TABLE vehicle(
     car_version VARCHAR(400),
     car_year INT,
     FOREIGN KEY (vehicle_model_id) REFERENCES vehicle_model(id)
+) INHERITS (control_fields);
+
+CREATE TABLE client_vehicle(
+    vehicle_id INT NOT NULL,
+    client_id INT NOT NULL,
+    color VARCHAR(300),
+    plate VARCHAR(600),
+    comments VARCHAR(700),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicle(id),
+    FOREIGN KEY (client_id) REFERENCES client(id)
 ) INHERITS (control_fields);
