@@ -14,6 +14,10 @@ Brand.init(
             type: DataTypes.STRING,
             field: 'brand_name'
         },
+        imageUrl: {
+            type: DataTypes.STRING,
+            field: 'image_url'
+        },
         active: {
             type: DataTypes.INTEGER
         }
