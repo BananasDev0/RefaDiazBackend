@@ -1,4 +1,32 @@
 import User from "../models/user.js";
+import Person from "../models/person.js";
+
+const createNewUser = async (req, res) => {
+    try {
+        const userData = req.body;
+        
+        const person = await Person.create({
+            name: userData.name,
+            last_name: userData.last_name,
+            birth_date: userData.birth_date,
+            email: userData.email,
+            phone_number: userData.phone_number,
+            address: userData.address,
+            active: userData.active
+        });
+
+        // Crea el usuario asociado a la persona creada
+        const user = await User.create({
+            person_id: person.id, 
+            active: userData.active
+        });
+
+        res.status(200).send(user.toJSON());
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
 
 const getAllUsers = async (req, res) => {
     try {
@@ -31,15 +59,6 @@ const getUser = async(req, res) => {
     }
 };
 
-const createNewUser = async(req, res) => {
-    try {
-        const userData = req.body;
-        const user = await User.create(userData);
-        res.status(200).send(user.toJSON());
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-};
 
 const updateUser = async (req, res) => {
     try {
