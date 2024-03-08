@@ -12,11 +12,9 @@ Person.init(
         },
         name: {
             type: DataTypes.STRING,
-            allowNull: false
         },
         last_name: {
             type: DataTypes.STRING,
-            allowNull: false
         },
         birth_date: {
             type: DataTypes.DATE
@@ -38,7 +36,7 @@ Person.init(
         sequelize,
         modelName: 'Person',
         tableName: 'person',
-        timestamps: true, //es para agregar created_at, update_at, checar con el equipo,
+        timestamps: true,
         updatedAt: 'updated_at',
         createdAt: 'created_at'
     }

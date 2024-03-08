@@ -1,24 +1,22 @@
 import User from "../models/user.js";
 import Person from "../models/person.js";
+import sequelize from '../config/dbConnection.js';
+
 
 const createNewUser = async (req, res) => {
     try {
         const userData = req.body;
-        
-        const person = await Person.create({
-            name: userData.name,
-            last_name: userData.last_name,
-            birth_date: userData.birth_date,
-            email: userData.email,
-            phone_number: userData.phone_number,
-            address: userData.address,
-            active: userData.active
-        });
+        console.log(userData);
+        // Crea tanto el usuario como la persona asociada en una sola transacción
+        const user = await sequelize.transaction(async (t) => {
+            // Crea la persona asociada al usuario
+            const person = await Person.create(userData.person, { transaction: t });
 
-        // Crea el usuario asociado a la persona creada
-        const user = await User.create({
-            person_id: person.id, 
-            active: userData.active
+            // Crea el usuario asociado a la persona creada
+            return await User.create({
+                person_id: person.id, 
+                active: userData.active
+            }, { transaction: t });
         });
 
         res.status(200).send(user.toJSON());
