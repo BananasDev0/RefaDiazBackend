@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
-import Person from './person.js'; // Import the Person model
+import Person from './person.js'; 
 
 class User extends Sequelize.Model {}
 
@@ -14,13 +14,18 @@ User.init(
         person_id: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        active: {
+            type: DataTypes.INTEGER
         }
     },
     {
         sequelize,
-        modelName: 'User',
+        modelName: 'user',
         tableName: 'user',
-        timestamps: false
+        timestamps: true, //es para agregar created_at, update_at, checar con el equipo,
+        updatedAt: 'updated_at',
+        createdAt: 'created_at'
     }
 );
 
