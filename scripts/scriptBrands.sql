@@ -1,4 +1,4 @@
-INSERT INTO brand (brand_name,image_url) VALUES 
+INSERT INTO brand (name,image_url) VALUES 
     ('Honda','/brands/logos/honda.png'),
     ('Suzuki','/brands/logos/suzuki.jpg'),
     ('Hyundai','/brands/logos/hyundai.jpg'),
