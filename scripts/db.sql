@@ -6,7 +6,7 @@ CREATE TABLE control_fields(
 
 CREATE TABLE brand(
     id SERIAL PRIMARY KEY,
-    brand_name VARCHAR(300),
+    name VARCHAR(300),
     image_url VARCHAR(5000)
 ) INHERITS (control_fields);
 

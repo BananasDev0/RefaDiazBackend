@@ -10,9 +10,9 @@ Brand.init(
             autoIncrement: true,
             primaryKey: true
         },
-        brandName: {
+        name: {
             type: DataTypes.STRING,
-            field: 'brand_name'
+            field: 'name'
         },
         imageUrl: {
             type: DataTypes.STRING,
