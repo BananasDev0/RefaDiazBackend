@@ -6,29 +6,41 @@ import sequelize from '../config/dbConnection.js';
 const createNewUser = async (req, res) => {
     try {
         const userData = req.body;
-        console.log(userData);
-        // Crea tanto el usuario como la persona asociada en una sola transacción
         const user = await sequelize.transaction(async (t) => {
             // Crea la persona asociada al usuario
-            const person = await Person.create(userData.person, { transaction: t });
+            const person = await Person.create(userData, { transaction: t });
 
             // Crea el usuario asociado a la persona creada
-            return await User.create({
-                person_id: person.id, 
+            const newUser = await User.create({
+                person_id: person.id,
                 active: userData.active
             }, { transaction: t });
+
+            return newUser;
         });
 
-        res.status(200).send(user.toJSON());
+        // Devolver una respuesta exitosa al cliente
+        res.status(201).send(user.toJSON());
     } catch (error) {
-        res.status(500).send(error.message);
+        // Manejar errores durante la creación del usuario
+        console.error('Error creating new user:', error);
+        // Revertir la transacción si es necesario
+        // Devolver un mensaje de error al cliente
+        res.status(500).send('Error creating new user: ' + error.message);
     }
 };
 
 
+
+
 const getAllUsers = async (req, res) => {
     try {
-        const users = await User.findAll();
+        const users = await User.findAll({
+            include: [{
+                model: Person,
+                as: 'person'
+            }]
+        });
         res.status(200).send(users);
     } catch (error) {
         console.error('Error retrieving users:', error);
@@ -42,7 +54,11 @@ const getUser = async(req, res) => {
         const user = await User.findOne({ 
             where: { 
                 id: userId 
-            } 
+            },
+            include: [{
+                model: Person,
+                as: 'person'
+            }] 
         });
        
         if(!user) {
