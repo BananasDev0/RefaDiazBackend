@@ -91,7 +91,7 @@ CREATE TABLE "user"(
 
 CREATE TABLE vehicle_model(
     id SERIAL PRIMARY KEY,
-    version VARCHAR(300),
+    name VARCHAR(100)
     brand_id INT,
     FOREIGN KEY (brand_id) REFERENCES brand(id)
 ) INHERITS (control_fields);
@@ -99,9 +99,7 @@ CREATE TABLE vehicle_model(
 CREATE TABLE vehicle(
     id SERIAL PRIMARY KEY,
     vehicle_model_id INT,
-    model VARCHAR(400),
-    car_version VARCHAR(400),
-    car_year INT,
+    version VARCHAR(300),
     FOREIGN KEY (vehicle_model_id) REFERENCES vehicle_model(id)
 ) INHERITS (control_fields);
 
