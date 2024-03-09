@@ -68,7 +68,6 @@ const getUser = async(req, res) => {
     }
 };
 
-
 const updateUser = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -80,11 +79,16 @@ const updateUser = async (req, res) => {
             return res.status(404).send("User not found.");
         }
 
-        await sequelize.transaction(async (t) => {
-    
-            await user.person.update(updatedUserData, { transaction: t });
-        });
+        const updatedPersonData = updatedUserData.person;
+        delete updatedUserData.person;
 
+        await sequelize.transaction(async (t) => {
+            await user.update(updatedUserData, { transaction: t });
+
+            if (updatedPersonData) {
+                await user.person.update(updatedPersonData, { transaction: t });
+            }
+        });
         const updatedUser = await User.findByPk(userId, { include: [{ model: Person, as: 'person' }] });
 
         return res.status(200).send(updatedUser);
@@ -93,8 +97,6 @@ const updateUser = async (req, res) => {
         return res.status(500).send('Error updating user: ' + error.message);
     }
 };
-
-
 
 const deleteUser = async(req, res) => {
     try {
