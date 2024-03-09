@@ -7,14 +7,14 @@ const createNewUser = async (req, res) => {
     try {
         const userData = req.body;
         const user = await sequelize.transaction(async (t) => {
-            // Crea la persona asociada al usuario
-            const person = await Person.create(userData, { transaction: t });
-
-            // Crea el usuario asociado a la persona creada
-            const newUser = await User.create({
-                person_id: person.id,
-                active: userData.active
-            }, { transaction: t });
+            // Crea el usuario y la persona asociada en una sola operación
+            const newUser = await User.create(userData, {
+                include: [{
+                    model: Person,
+                    as: 'person'
+                }], // Indica a Sequelize que incluya el modelo Person en la operación
+                transaction: t
+            });
 
             return newUser;
         });
