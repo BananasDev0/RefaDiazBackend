@@ -19,19 +19,14 @@ const createNewUser = async (req, res) => {
             return newUser;
         });
 
-        // Devolver una respuesta exitosa al cliente
         res.status(201).send(user.toJSON());
     } catch (error) {
-        // Manejar errores durante la creación del usuario
+
         console.error('Error creating new user:', error);
-        // Revertir la transacción si es necesario
-        // Devolver un mensaje de error al cliente
+       
         res.status(500).send('Error creating new user: ' + error.message);
     }
 };
-
-
-
 
 const getAllUsers = async (req, res) => {
     try {
@@ -77,22 +72,29 @@ const getUser = async(req, res) => {
 const updateUser = async (req, res) => {
     try {
         const userId = req.params.id;
-        const updatedData = req.body;
+        const updatedUserData = req.body;
 
-        const user = await User.findByPk(userId);
+        const user = await User.findByPk(userId, { include: [{ model: Person, as: 'person' }] });
 
         if (!user) {
-            res.status(404).send("User not found.");
-        } else {
-            await user.update(updatedData);
-            res.status(200).send(user);
+            return res.status(404).send("User not found.");
         }
 
+        await sequelize.transaction(async (t) => {
+    
+            await user.person.update(updatedUserData, { transaction: t });
+        });
+
+        const updatedUser = await User.findByPk(userId, { include: [{ model: Person, as: 'person' }] });
+
+        return res.status(200).send(updatedUser);
     } catch (error) {
         console.error('Error updating user:', error);
-        res.status(500).send(error.message);
+        return res.status(500).send('Error updating user: ' + error.message);
     }
 };
+
+
 
 const deleteUser = async(req, res) => {
     try {

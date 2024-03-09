@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
-import Person from './person.js'; // Importa el modelo Person
+import Person from './person.js';
 
 class User extends Sequelize.Model {}
 
