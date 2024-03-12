@@ -8,11 +8,11 @@ const radiatorRouter = express.Router();
 // radiatorRouter.get('/radiator', getAllRadiator);
 
 radiatorRouter.get('/radiators', getAllRadiator);
-radiatorRouter.get('/radiator/:id', getRadiator);
+radiatorRouter.get('/radiator/:dpi', getRadiator);
 
 radiatorRouter.post('/radiator', createRadiator);
 
-radiatorRouter.put('/radiator/:id', updateRadiator);
+radiatorRouter.put('/radiator/:dpi', updateRadiator);
 
 radiatorRouter.delete('/radiator/:id', deleteRadiator);
 

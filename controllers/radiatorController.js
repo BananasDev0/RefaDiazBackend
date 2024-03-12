@@ -1,10 +1,13 @@
-import sequelize from "../config/dbConnection";
-import Product from "../models/product";
-import Radiator from "../models/radiator";
+import sequelize from "../config/dbConnection.js";
+import Product from "../models/product.js";
+import Radiator from "../models/radiator.js";
 
 const getAllRadiator = async(req,res) => {
     try {
         const radiators = await Radiator.findAll({
+            attributes : {
+                exclude : ['id']
+            },
             include: [{
                 model : Product,
                 as : 'product'
@@ -20,10 +23,11 @@ const getAllRadiator = async(req,res) => {
 
 const getRadiator = async(req, res) => {
     try{
-        const radiatorId = req.params.id;
+        const radiatorId = req.params.dpi;
+        console.log(radiatorId)
         const radiator = await Radiator.findOne({
             where: {
-                id: radiatorId
+                dpi: radiatorId
             },
             include : [{
                 model:Product,
@@ -46,18 +50,22 @@ const getRadiator = async(req, res) => {
 const createRadiator = async (req,res) => {
     try {
         const radiatorData = req.body;
+
+        console.log(radiatorData)
+
         const radiator = await sequelize.transaction(async (t)=>{
-            const newRadiator = await Product.create(radiatorData,{
+            const newRadiator = await Radiator.create(radiatorData,{
                 include:[{
                     model: Product,
                     as : 'product'
                 }],
                 transaction: t
             });
+
             return newRadiator;
         });
         
-        res.status(200).send(radiator.toJson());
+        res.status(201).send(radiator);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -65,7 +73,7 @@ const createRadiator = async (req,res) => {
 
 const updateRadiator = async (req,res) => {
     try {
-        const radiatorId = req.params.id;
+        const radiatorId = req.params.dpi;
         const updateRadiatorData = req.body;
 
         const radiator = await Radiator.findByPk(radiatorId,{include:[{model:Product,as:'product'}]});
