@@ -1,40 +1,39 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
-import Brand from "./brand.js";
-import Vehicle from "./vehicle.js";
+import Brand from './brand.js'; // Importa el modelo de Brand
 
 class VehicleModel extends Sequelize.Model {}
-
 VehicleModel.init(
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
-        },
-        name: {
-            type: DataTypes.STRING,
-        },
-        brandId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: Brand,
-                key: 'id'
-            }
-        }
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
     },
-    {
-        sequelize,
-        modelName: 'VehicleModel',
-        tableName: 'vehicle_model',
-        timestamps: true,
-        updatedAt: 'updated_at',
-        createdAt: 'created_at'
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    brand_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Brand,
+        key: 'id'
+      }
     }
+  },
+  {
+    sequelize,
+    modelName: 'VehicleModel',
+    tableName: 'vehicle_model',
+    timestamps: true,
+    updatedAt: 'updated_at',
+    createdAt: 'created_at'
+  }
 );
 
-
-VehicleModel.hasMany(Vehicle, { as: 'vehicles', foreignKey: 'vehicle_model_id' });
+VehicleModel.belongsTo(Brand, { foreignKey: 'brand_id' }); 
+Brand.hasMany(VehicleModel, { foreignKey: 'brand_id' }); 
 
 export default VehicleModel;
