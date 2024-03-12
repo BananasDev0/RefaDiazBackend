@@ -11,7 +11,7 @@ User.init(
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
         },
-        person_id: {
+        personId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {

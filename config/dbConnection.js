@@ -5,6 +5,7 @@ dotenv.config({
   path: `.env.${process.env.NODE_ENV}`
 });
 
+
 const sequelize = new Sequelize({
     database: process.env.DATABASE,
     username: process.env.DATABASE_USERNAME,
@@ -14,7 +15,7 @@ const sequelize = new Sequelize({
     dialect: "postgres",
     dialectOptions: {
       ssl: {
-        require: true, 
+        require: false, 
         rejectUnauthorized: false
       }
     },
