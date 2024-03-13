@@ -12,5 +12,4 @@ brandRouter.put('/brand/:id', updateBrand);
 
 brandRouter.delete('/brand/:id', deleteBrand);
 
-// Exporta el router
 export default brandRouter;

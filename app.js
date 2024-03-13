@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import buildRouter from './routes/index.js';
 import sequelize from './config/dbConnection.js';
+import firebaseTokenVerification from './middleware/auth.js';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ extended: true })); // Para parsear application/x-w
 app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
+//app.use(firebaseTokenVerification);
 
 // Utiliza las rutas en tu aplicación Express
 buildRouter(app)

@@ -1,5 +1,3 @@
-//Esto es un ejemplo, cuando se tenga la bdd y 
-//la conexion tenemos que usar sequelize para definir el modelo
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
 
@@ -16,9 +14,9 @@ Product.init(
             type: DataTypes.STRING,
             field: 'product_name'
         },
-        dpi: {
-            type: DataTypes.STRING
-        },
+       // dpi: {
+       //     type: DataTypes.STRING
+       // },
         brandId: {
             type: DataTypes.INTEGER,
             field: 'brand_id'
@@ -41,3 +39,4 @@ Product.init(
     }
 );
 export default Product;
+

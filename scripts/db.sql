@@ -1,7 +1,3 @@
-CREATE DATABASE REFADIAZDB;
-
-USE REFADIAZDB;
-
 CREATE TABLE control_fields(
     active BIT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -10,20 +6,22 @@ CREATE TABLE control_fields(
 
 CREATE TABLE brand(
     id SERIAL PRIMARY KEY,
-    brand_name VARCHAR(300)
+    name VARCHAR(300),
+    image_url VARCHAR(5000)
 ) INHERITS (control_fields);
 
 CREATE TABLE product(
     id SERIAL PRIMARY KEY,
     product_name VARCHAR(300),
-    dpi VARCHAR(300),
     brand_id INT,
     image_url VARCHAR(5000),
+    comments VARCHAR(5000),
+    stock_count INT,
     FOREIGN KEY (brand_id) REFERENCES brand(id)
 ) INHERITS (control_fields);
 
 CREATE TABLE radiator(
-    id SERIAL PRIMARY KEY,
+    dpi UUID PRIMARY KEY,
     product_id INT,
     FOREIGN KEY (product_id) REFERENCES product(id)
 ) INHERITS (control_fields);
@@ -66,30 +64,11 @@ CREATE TABLE provider_product(
     FOREIGN KEY (provider_id) REFERENCES provider(id)
 ) INHERITS (control_fields);
 
-CREATE TABLE vehicle(
-    id SERIAL PRIMARY KEY,
-    brand_id INT NOT NULL,
-    model VARCHAR(400),
-    car_version VARCHAR(400),
-    car_year INT,
-    FOREIGN KEY (brand_id) REFERENCES brand(id)
-) INHERITS (control_fields);
-
 CREATE TABLE client(
     id SERIAL PRIMARY KEY,
     client_name VARCHAR(300),
     phone_number INT,
     comments VARCHAR(500) 
-) INHERITS (control_fields);
-
-CREATE TABLE client_vehicle(
-    vehicle_id INT NOT NULL,
-    client_id INT NOT NULL,
-    color VARCHAR(300),
-    plate VARCHAR(600),
-    comments VARCHAR(700),
-    FOREIGN KEY (vehicle_id) REFERENCES vehicle(id),
-    FOREIGN KEY (client_id) REFERENCES client(id)
 ) INHERITS (control_fields);
 
 CREATE TABLE person(
@@ -104,8 +83,32 @@ CREATE TABLE person(
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE user(
+CREATE TABLE "user"(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     person_id INT,
     FOREIGN KEY (person_id) REFERENCES person(id)
+) INHERITS (control_fields);
+
+CREATE TABLE vehicle_model(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100)
+    brand_id INT,
+    FOREIGN KEY (brand_id) REFERENCES brand(id)
+) INHERITS (control_fields);
+
+CREATE TABLE vehicle(
+    id SERIAL PRIMARY KEY,
+    vehicle_model_id INT,
+    version VARCHAR(300),
+    FOREIGN KEY (vehicle_model_id) REFERENCES vehicle_model(id)
+) INHERITS (control_fields);
+
+CREATE TABLE client_vehicle(
+    vehicle_id INT NOT NULL,
+    client_id INT NOT NULL,
+    color VARCHAR(300),
+    plate VARCHAR(600),
+    comments VARCHAR(700),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicle(id),
+    FOREIGN KEY (client_id) REFERENCES client(id)
 ) INHERITS (control_fields);

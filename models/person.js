@@ -1,34 +1,45 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
 
-class Brand extends Sequelize.Model{};
+class Person extends Sequelize.Model {}
 
-Brand.init(
+Person.init(
     {
-        id:{
+        id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
         name: {
             type: DataTypes.STRING,
-            field: 'name'
         },
-        imageUrl: {
+        lastName: {
             type: DataTypes.STRING,
-            field: 'image_url'
+        },
+        birthDate: {
+            type: DataTypes.DATE
+        },
+        email: {
+            type: DataTypes.STRING
+        },
+        phoneNumber: {
+            type: DataTypes.STRING
+        },
+        address: {
+            type: DataTypes.STRING
         },
         active: {
             type: DataTypes.INTEGER
         }
     },
     {
-        sequelize: sequelize, // Aquí pasas tu instancia de Sequelize configurada
-        modelName: 'brand', // El nombre del modelo en singular
-        tableName: 'brand', // El nombre de la tabla en la base de datos
-        timestamps: true, //es para agregar created_at, update_at, checar con el equipo,
+        sequelize,
+        modelName: 'Person',
+        tableName: 'person',
+        timestamps: true,
         updatedAt: 'updated_at',
         createdAt: 'created_at'
     }
 );
-export default Brand;
+
+export default Person;
