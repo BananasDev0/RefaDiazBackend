@@ -5,9 +5,6 @@ import Radiator from "../models/radiator.js";
 const getAllRadiator = async(req,res) => {
     try {
         const radiators = await Radiator.findAll({
-            attributes : {
-                exclude : ['id']
-            },
             include: [{
                 model : Product,
                 as : 'product'
@@ -24,7 +21,6 @@ const getAllRadiator = async(req,res) => {
 const getRadiator = async(req, res) => {
     try{
         const radiatorId = req.params.dpi;
-        console.log(radiatorId)
         const radiator = await Radiator.findOne({
             where: {
                 dpi: radiatorId
@@ -50,9 +46,6 @@ const getRadiator = async(req, res) => {
 const createRadiator = async (req,res) => {
     try {
         const radiatorData = req.body;
-
-        console.log(radiatorData)
-
         const radiator = await sequelize.transaction(async (t)=>{
             const newRadiator = await Radiator.create(radiatorData,{
                 include:[{
