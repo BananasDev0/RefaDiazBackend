@@ -11,12 +11,13 @@ Vehicle.init(
       primaryKey: true
     },
     vehicleModelId: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     version: {
       type: DataTypes.STRING
     },
-    year: {
+    active: {
       type: DataTypes.INTEGER
     }
   },
@@ -30,7 +31,7 @@ Vehicle.init(
   }
 );
 
-Vehicle.belongsTo(VehicleModel, { foreignKey: 'vehicleModelId' });
-VehicleModel.hasMany(Vehicle, { foreignKey: 'vehicleModelId' });
+Vehicle.belongsTo(VehicleModel, { foreignKey: 'vehicleModelId', as: 'vehicleModel' });
+VehicleModel.hasMany(Vehicle, { foreignKey: 'vehicleModelId', as: 'vehicle' });
 
 export default Vehicle;

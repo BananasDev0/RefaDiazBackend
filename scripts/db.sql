@@ -91,7 +91,7 @@ CREATE TABLE "user"(
 
 CREATE TABLE vehicle_model(
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100)
+    name VARCHAR(100),
     brand_id INT,
     FOREIGN KEY (brand_id) REFERENCES brand(id)
 ) INHERITS (control_fields);
