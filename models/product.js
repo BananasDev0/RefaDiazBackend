@@ -14,9 +14,9 @@ Product.init(
             type: DataTypes.STRING,
             field: 'product_name'
         },
-        dpi: {
-            type: DataTypes.STRING
-        },
+       // dpi: {
+       //     type: DataTypes.STRING
+       // },
         brandId: {
             type: DataTypes.INTEGER,
             field: 'brand_id'
