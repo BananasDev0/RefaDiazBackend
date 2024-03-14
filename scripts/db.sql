@@ -7,7 +7,9 @@ CREATE TABLE control_fields(
 CREATE TABLE brand(
     id SERIAL PRIMARY KEY,
     name VARCHAR(300),
-    image_url VARCHAR(5000)
+    image_url VARCHAR(5000),
+    brand_type_id INT NOT NULL,
+    FOREIGN KEY (brand_type_id) REFERENCES brand_type(id)
 ) INHERITS (control_fields);
 
 CREATE TABLE product(
@@ -112,3 +114,8 @@ CREATE TABLE client_vehicle(
     FOREIGN KEY (vehicle_id) REFERENCES vehicle(id),
     FOREIGN KEY (client_id) REFERENCES client(id)
 ) INHERITS (control_fields);
+
+CREATE TABLE brand_type(
+    id SERIAL PRIMARY KEY,
+    brand_type VARCHAR(100)
+) INHERITS (control_fields)

@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
+import BrandType from "./brandType.js";
 
 class Brand extends Sequelize.Model{};
 
@@ -20,6 +21,14 @@ Brand.init(
         },
         active: {
             type: DataTypes.INTEGER
+        },
+        brandTypeId : {
+            type: DataTypes.INTEGER,
+            field : 'brand_type_id',
+            references : {
+                Model: BrandType,
+                key : 'id'
+            }
         }
     },
     {
@@ -31,4 +40,8 @@ Brand.init(
         createdAt: 'created_at'
     }
 );
+
+Brand.belongsTo(BrandType, {as: 'brand_type',foreignKey : 'brand_type_id'});
+BrandType.hasMany(Brand, {as: 'brand',foreignKey : 'brand_type_id'});
+
 export default Brand;
