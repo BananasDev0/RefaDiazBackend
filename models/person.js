@@ -13,16 +13,16 @@ Person.init(
         name: {
             type: DataTypes.STRING,
         },
-        lastName: {
+        last_name: {
             type: DataTypes.STRING,
         },
-        birthDate: {
+        birth_date: {
             type: DataTypes.DATE
         },
         email: {
             type: DataTypes.STRING
         },
-        phoneNumber: {
+        phone_number: {
             type: DataTypes.STRING
         },
         address: {
