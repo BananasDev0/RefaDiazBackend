@@ -15,7 +15,7 @@ const createNewUser = async (req, res) => {
                 }], // Indica a Sequelize que incluya el modelo Person en la operación
                 transaction: t
             });
-            console.log(newUser.toJSON());
+            console.log(newUser.toJSON())
             return newUser;
         });
 

@@ -81,17 +81,15 @@ CREATE TABLE person(
     address VARCHAR(300)
 ) INHERITS (control_fields);
 
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 CREATE TABLE "user"(
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID varchar(500),
     person_id INT,
     FOREIGN KEY (person_id) REFERENCES person(id)
 ) INHERITS (control_fields);
 
 CREATE TABLE vehicle_model(
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100)
+    name VARCHAR(100),
     brand_id INT,
     FOREIGN KEY (brand_id) REFERENCES brand(id)
 ) INHERITS (control_fields);
