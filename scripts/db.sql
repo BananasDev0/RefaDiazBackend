@@ -4,6 +4,11 @@ CREATE TABLE control_fields(
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE brand_type(
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(100)
+) INHERITS (control_fields)
+
 CREATE TABLE brand(
     id SERIAL PRIMARY KEY,
     name VARCHAR(300),
@@ -115,7 +120,3 @@ CREATE TABLE client_vehicle(
     FOREIGN KEY (client_id) REFERENCES client(id)
 ) INHERITS (control_fields);
 
-CREATE TABLE brand_type(
-    id SERIAL PRIMARY KEY,
-    brand_type VARCHAR(100)
-) INHERITS (control_fields)

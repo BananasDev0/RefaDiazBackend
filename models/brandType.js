@@ -12,9 +12,9 @@ BrandType.init(
             autoIncrement: true,
             primaryKey: true
         },
-        brandType: {
+        type: {
             type: DataTypes.STRING,
-            field: 'brand_type'
+            field: 'type'
         },
 
         active: {
