@@ -1,4 +1,4 @@
-INSERT INTO brand_type (brand_type) VALUES
+INSERT INTO brand_type (type) VALUES
 ('Automotive'),
 ('Heavy-Duty');
 

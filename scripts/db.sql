@@ -7,7 +7,7 @@ CREATE TABLE control_fields(
 CREATE TABLE brand_type(
     id SERIAL PRIMARY KEY,
     type VARCHAR(100)
-) INHERITS (control_fields)
+) INHERITS (control_fields);
 
 CREATE TABLE brand(
     id SERIAL PRIMARY KEY,
@@ -89,7 +89,7 @@ CREATE TABLE person(
 ) INHERITS (control_fields);
 
 CREATE TABLE "user"(
-    id UUID varchar(500),
+    id varchar(500) PRIMARY KEY,
     person_id INT,
     FOREIGN KEY (person_id) REFERENCES person(id)
 ) INHERITS (control_fields);
