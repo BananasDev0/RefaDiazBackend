@@ -4,10 +4,17 @@ CREATE TABLE control_fields(
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE brand_type(
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(100)
+) INHERITS (control_fields);
+
 CREATE TABLE brand(
     id SERIAL PRIMARY KEY,
     name VARCHAR(300),
-    image_url VARCHAR(5000)
+    image_url VARCHAR(5000),
+    brand_type_id INT NOT NULL,
+    FOREIGN KEY (brand_type_id) REFERENCES brand_type(id)
 ) INHERITS (control_fields);
 
 CREATE TABLE product(
@@ -82,7 +89,7 @@ CREATE TABLE person(
 ) INHERITS (control_fields);
 
 CREATE TABLE "user"(
-    id UUID varchar(500),
+    id varchar(500) PRIMARY KEY,
     person_id INT,
     FOREIGN KEY (person_id) REFERENCES person(id)
 ) INHERITS (control_fields);
@@ -110,3 +117,4 @@ CREATE TABLE client_vehicle(
     FOREIGN KEY (vehicle_id) REFERENCES vehicle(id),
     FOREIGN KEY (client_id) REFERENCES client(id)
 ) INHERITS (control_fields);
+

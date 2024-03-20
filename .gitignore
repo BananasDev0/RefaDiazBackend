@@ -5,3 +5,4 @@ dist/
 build/
 .vscode/
 refadiazdev-firebase-adminsdk-36xur-954b5e2d7f.json
+package-lock.json

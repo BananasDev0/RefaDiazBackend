@@ -1,9 +1,21 @@
+import sequelize from "../config/dbConnection.js";
 import Brand from "../models/brand.js";
+import BrandType from "../models/brandType.js";
 
 const getAll = async (req, res) => {
     try {
-        const brands = await Brand.findAll(); // Recupera todas las marcas de la base de datos
-        res.status(200).send(brands); // Envía todas las marcas como respuesta
+        const brands = await Brand.findAll({
+            include : [{
+                model : BrandType,
+                as: 'brand_type'
+            }]
+
+        });
+        
+        
+        
+      
+        res.status(200).send(brands); 
     } catch (error) {
         console.error('Error al recuperar las marcas:', error);
         res.status(500).send(error.message);
@@ -15,7 +27,11 @@ const getBrand = async(req, res) => {
         const brand = await Brand.findOne({ 
             where: { 
                 id: brandId 
-            } 
+            },
+            include:[{
+                model : BrandType,
+                as: 'brand_type'
+            }] 
         });
        
         if(!brand) {
@@ -49,10 +65,24 @@ const updateBrand = async (req, res) => {
 
         if (!brand) {
             res.status(404).send("Resource not found.");
-        } else {
-            await brand.update(updatedData);
-            res.status(200).send(brand);
-        }
+        } 
+
+        const updatedBrandType = updatedData.brandType;
+        delete updatedData.brandType;
+
+        await sequelize.transaction(async (t)=> {
+            await brand.update(updatedData,{transaction:t});
+
+            if(updatedBrandType){
+                await brand.brandType.update(updatedBrandType,{transaction:t})
+            }
+
+        });
+
+        const updatedBrand = await Brand.findByPk(brandId,{include: [{model:BrandType, as:'brand_type'}]});
+        
+        res.status(200).send(updatedBrand);
+        
 
     } catch (error) {
         console.error('Error al actualizar la marca:', error);

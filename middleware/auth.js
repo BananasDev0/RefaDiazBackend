@@ -5,6 +5,8 @@ dotenv.config({
     path: `.env.${process.env.NODE_ENV}`
 });
 
+console.log(process.env.FIREBASE_JSON_ADMIN)
+
 const serviceAccount = process.env.FIREBASE_JSON_ADMIN;
 
 firebaseAdmin.initializeApp({
