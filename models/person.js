@@ -11,19 +11,22 @@ Person.init(
             primaryKey: true
         },
         name: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING
         },
         lastName: {
             type: DataTypes.STRING,
+            field: 'last_name'
         },
         birthDate: {
-            type: DataTypes.DATE
+            type: DataTypes.DATE,
+            field: 'birth_date'
         },
         email: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
         },
         phoneNumber: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            field: 'phone_number'
         },
         address: {
             type: DataTypes.STRING

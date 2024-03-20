@@ -15,7 +15,7 @@ const createNewUser = async (req, res) => {
                 }], // Indica a Sequelize que incluya el modelo Person en la operación
                 transaction: t
             });
-
+            console.log(newUser.toJSON())
             return newUser;
         });
 
@@ -28,7 +28,7 @@ const createNewUser = async (req, res) => {
     }
 };
 
-const getAllUsers = async (req, res) => {
+const getAll = async (req, res) => {
     try {
         const users = await User.findAll({
             include: [{
@@ -116,4 +116,4 @@ const deleteUser = async(req, res) => {
     }
 };
 
-export { createNewUser, getAllUsers, deleteUser, getUser, updateUser };
+export { createNewUser, getAll, deleteUser, getUser, updateUser };
