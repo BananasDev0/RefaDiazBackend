@@ -36,8 +36,7 @@ Vehicle.init(
     }
 );
 
-Vehicle.hasOne(VehicleModel, { foreignKey: 'id', as: 'vehicle_model' });
-Vehicle.belongsTo(VehicleModel, { as: 'vehicleModel', foreignKey: 'id' });
-VehicleModel.belongsTo(Vehicle, {as: 'vehicle', foreignKey: 'id'});
+Vehicle.belongsTo(VehicleModel, { foreignKey: 'vehicleModelId', as: 'vehicleModel' });
+VehicleModel.hasMany(Vehicle, { foreignKey: 'vehicleModelId', as: 'vehicle' });
 
 export default Vehicle;

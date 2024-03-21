@@ -28,9 +28,9 @@ const createVehicleModel = async (req, res) => {
         res.status(201).send(car.toJSON());
     } catch (error) {
 
-        console.error('Error creating new user:', error);
+        console.error('Error creating new car:', error);
        
-        res.status(500).send('Error creating new user: ' + error.message);
+        res.status(500).send('Error creating new car: ' + error.message);
     }
 };
 
