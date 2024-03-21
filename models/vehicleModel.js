@@ -17,7 +17,11 @@ VehicleModel.init(
     },
     brandId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: Brand,
+        key: 'id'
+      }
     },
     active: {
       type: DataTypes.INTEGER
@@ -35,5 +39,6 @@ VehicleModel.init(
 
 VehicleModel.belongsTo(Brand, { foreignKey: 'brand_id', as: 'brand' });
 Brand.hasMany(VehicleModel, { foreignKey: 'brand_id', as: 'vehicleModels' });
+VehicleModel.belongsTo(Vehicle, { as: 'vehicle', foreignKey: 'vehicle_id' });
 
 export default VehicleModel;

@@ -37,6 +37,6 @@ Vehicle.init(
     }
 );
 
-Vehicle.belongsTo(VehicleModel, { foreignKey: 'vehicle_model_id' });
+Vehicle.hasOne(VehicleModel, { as: 'vehicle_model', foreignKey: 'vehicle_model_id' });
 
 export default Vehicle;

@@ -39,7 +39,7 @@ const getAll = async (req, res) => {
         const vehicles = await Vehicle.findAll({
             include: [{
                 model: VehicleModel,
-                as: 'vehicleModel',
+                as: 'vehicle_model',
                 include: [{
                     model: Brand,
                     as: 'brand'
