@@ -21,6 +21,9 @@ VehicleModel.init(
                 model: Brand,
                 key: 'id'
             }
+        },
+        active: {
+            type: DataTypes.INTEGER
         }
     },
     {

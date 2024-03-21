@@ -22,6 +22,9 @@ Vehicle.init(
         },
         version: {
             type: DataTypes.STRING
+        },
+        active: {
+            type: DataTypes.INTEGER
         }
     },
     {
