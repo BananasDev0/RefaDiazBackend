@@ -1,107 +1,125 @@
-import VehicleModel from '../models/vehicleModel.js';
+import Vehicle from "../models/vehicle.js";
+import VehicleModel from "../models/vehicle_model.js";
+import Brand from "../models/brand.js";
 import sequelize from '../config/dbConnection.js';
-import Brand from '../models/brand.js';
-import Vehicle from '../models/vehicle.js';
 
+
+const createVehicleModel = async (req, res) => {
+    try {
+        const carData = req.body;
+        const car = await sequelize.transaction(async (t) => {
+            const newCar = await VehicleModel.create(carData, {
+                include: 
+                [
+                    {
+                        model: Vehicle,
+                        as: 'vehicle'
+                    },
+                    {
+                        model: Brand,
+                        as: 'brand'
+                    }
+            ], 
+                transaction: t
+            });
+            console.log(newCar.toJSON())
+            return newCar;
+        });
+
+        res.status(201).send(car.toJSON());
+    } catch (error) {
+
+        console.error('Error creating new user:', error);
+       
+        res.status(500).send('Error creating new user: ' + error.message);
+    }
+};
 
 const getAll = async (req, res) => {
     try {
-        const models = await VehicleModel.findAll({
-            include: [{ model: Vehicle, as: 'vehicle' }]
+        const vehicles = await Vehicle.findAll({
+            include: [{
+                model: VehicleModel,
+                as: 'vehicleModel',
+                include: [{
+                    model: Brand,
+                    as: 'brand'
+                }]
+            }]
         });
-
-        res.status(200).send(models);
+        res.status(200).send(vehicles);
     } catch (error) {
-        console.error('Error retrieving vehicle models:', error);
-        res.status(500).send('Error retrieving vehicle models: ' + error.message);
-    }
-};
-
-
-const getModel = async (req, res) => {
-    try {
-        const modelId = req.params.id;
-        const model = await VehicleModel.findByPk(modelId);
-
-        if (!model) {
-            res.status(404).send("Model not found.");
-        } else {
-            res.status(200).send(model);
-        }
-
-    } catch (error) {
+        console.error('Error retrieving vehicles:', error);
         res.status(500).send(error.message);
     }
 };
 
-const createModel = async (req, res) => {
+const getVehicleModel = async (req, res) => {
     try {
-        const modelData = req.body;
-        const brandId = modelData.brandId; // Suponiendo que el ID de la marca se envía como brandId en el cuerpo de la solicitud
-
-        // Verificar si la marca existe
-        const brandExists = await Brand.findByPk(brandId);
-        if (!brandExists) {
-            return res.status(404).send("Brand not found.");
-        }
-
-        const model = await sequelize.transaction(async (t) => {
-            // Agregar la marca al objeto de datos del modelo
-            modelData.BrandId = brandId;
-
-            // Crear el nuevo modelo de vehículo
-            const newModel = await VehicleModel.create(modelData, {
-                include: [{ model: Vehicle, as: 'vehicle' }], 
-                transaction: t
-            });
-
-            return newModel;
+        const vehicleModelId = req.params.id;
+        const vehicleModel = await VehicleModel.findOne({ 
+            where: { 
+                id: vehicleModelId
+            },
+            include: [{
+                model: Vehicle,
+                as: 'vehicle'
+            }, {
+                model: Brand,
+                as: 'brand'
+            }] 
         });
-
-        res.status(201).send(model.toJSON());
+       
+        if (!vehicleModel) {
+            return res.status(404).send('Vehicle Model not found.');
+        }
+        
+        res.status(200).send(vehicleModel);
     } catch (error) {
-        console.error('Error creating new vehicle model:', error);
-        res.status(500).send('Error creating new vehicle model: ' + error.message);
+        console.error('Error retrieving vehicle model:', error);
+        res.status(500).send(error.message);
     }
 };
 
-
-
-
-const updateModel = async (req, res) => {
+const updateVehicle = async (req, res) => {
     try {
-        const modelId = req.params.id;
-        const updatedData = req.body;
-        const model = await VehicleModel.findByPk(modelId);
+        const vehicleId = req.params.id;
+        const updatedVehicleData = req.body;
 
-        if (!model) {
-            res.status(404).send("Model not found.");
-        } else {
-            await model.update(updatedData);
-            res.status(200).send(model);
+        const vehicle = await Vehicle.findByPk(vehicleId, { include: [{ model: VehicleModel, as: 'vehicleModel' }] });
+
+        if (!vehicle) {
+            return res.status(404).send("Vehicle not found.");
         }
 
+        await sequelize.transaction(async (t) => {
+            await vehicle.update(updatedVehicleData, { transaction: t });
+        });
+
+        const updatedVehicle = await Vehicle.findByPk(vehicleId, { include: [{ model: VehicleModel, as: 'vehicleModel' }] });
+
+        return res.status(200).send(updatedVehicle);
     } catch (error) {
-        res.status(500).send(error.message);
+        console.error('Error updating vehicle:', error);
+        return res.status(500).send('Error updating vehicle: ' + error.message);
     }
-}
+};
 
-const deleteModel = async (req, res) => {
+const deleteVehicle = async (req, res) => {
     try {
-        const modelId = req.params.id;
-        const model = await VehicleModel.findByPk(modelId);
+        const vehicleId = req.params.id;
+        const vehicle = await Vehicle.findByPk(vehicleId);
 
-        if (!model) {
-            res.status(404).send("Model not found.");
+        if (!vehicle) {
+            res.status(404).send('Vehicle not found.');
         } else {
-            await model.destroy();
+            await vehicle.destroy();
             res.status(204).send();
         }
-
     } catch (error) {
-        console.log('Error deleting model: ', error);
-        res.status(500).send(error.message);
+        console.error('Error deleting vehicle:', error);
+        res.status(500).send(error);
     }
-}
+};
 
-export { getAll, getModel, createModel, updateModel, deleteModel };
+export { createVehicleModel, getAll, getVehicleModel, updateVehicle, deleteVehicle };
