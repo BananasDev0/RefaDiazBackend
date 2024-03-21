@@ -1,45 +1,39 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
+import VehicleModel from "./vehicle_model.js";
 
 class Vehicle extends Sequelize.Model {}
 
-Person.init(
+Vehicle.init(
     {
         id: {
             type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
-        name: {
-            type: DataTypes.STRING,
+        vehicleModelId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            field: 'vehicle_model_id',
+            references: {
+                model: VehicleModel,
+                key: 'id'
+            }
         },
-        last_name: {
-            type: DataTypes.STRING,
-        },
-        birth_date: {
-            type: DataTypes.DATE
-        },
-        email: {
+        version: {
             type: DataTypes.STRING
-        },
-        phone_number: {
-            type: DataTypes.STRING
-        },
-        address: {
-            type: DataTypes.STRING
-        },
-        active: {
-            type: DataTypes.INTEGER
         }
     },
     {
         sequelize,
-        modelName: 'Person',
-        tableName: 'person',
+        modelName: 'Vehicle',
+        tableName: 'vehicle',
         timestamps: true,
         updatedAt: 'updated_at',
         createdAt: 'created_at'
     }
 );
 
-export default Person;
+Vehicle.belongsTo(VehicleModel, { foreignKey: 'vehicle_model_id' });
+
+export default Vehicle;
