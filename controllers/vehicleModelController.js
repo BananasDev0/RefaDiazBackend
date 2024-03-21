@@ -3,7 +3,6 @@ import VehicleModel from "../models/vehicle_model.js";
 import Brand from "../models/brand.js";
 import sequelize from '../config/dbConnection.js';
 
-
 const createVehicleModel = async (req, res) => {
     try {
         const carData = req.body;
