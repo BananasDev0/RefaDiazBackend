@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
-import VehicleModel from "./vehicle_model.js";
+import VehicleModel from "./vehicleModel.js";
 
 class Vehicle extends Sequelize.Model {}
 
@@ -13,7 +13,6 @@ Vehicle.init(
         },
         vehicleModelId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             field: 'vehicle_model_id',
             references: {
                 model: VehicleModel,
@@ -37,6 +36,8 @@ Vehicle.init(
     }
 );
 
-Vehicle.hasOne(VehicleModel, { as: 'vehicle_model', foreignKey: 'vehicle_model_id' });
+Vehicle.hasOne(VehicleModel, { foreignKey: 'id', as: 'vehicle_model' });
+Vehicle.belongsTo(VehicleModel, { as: 'vehicleModel', foreignKey: 'id' });
+VehicleModel.belongsTo(Vehicle, {as: 'vehicle', foreignKey: 'id'});
 
 export default Vehicle;

@@ -1,5 +1,5 @@
 import Vehicle from "../models/vehicle.js";
-import VehicleModel from "../models/vehicle_model.js";
+import VehicleModel from "../models/vehicleModel.js";
 import Brand from "../models/brand.js";
 import sequelize from '../config/dbConnection.js';
 
@@ -36,14 +36,10 @@ const createVehicleModel = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        const vehicles = await Vehicle.findAll({
+        const vehicles = await VehicleModel.findAll({
             include: [{
-                model: VehicleModel,
-                as: 'vehicle_model',
-                include: [{
-                    model: Brand,
-                    as: 'brand'
-                }]
+                model: Vehicle, 
+                as: 'vehicle'
             }]
         });
         res.status(200).send(vehicles);
@@ -63,10 +59,7 @@ const getVehicleModel = async (req, res) => {
             include: [{
                 model: Vehicle,
                 as: 'vehicle'
-            }, {
-                model: Brand,
-                as: 'brand'
-            }] 
+            }]
         });
        
         if (!vehicleModel) {
