@@ -51,6 +51,15 @@ INSERT INTO brand (name,image_url,brand_type_id) VALUES
     ('John Deere', '/brands/logos/john_deere.jpg', 2),
     ('Kenworth', '/brands/logos/kenworth.jpg', 2),
     ('Perkins', '/brands/logos/perkins.jpg', 2),
-    ('Scania', '/brands/logos/scania.jpg', 2);
+    ('Scania', '/brands/logos/scania.jpg', 2),
+    ('Caterpillar', '/brands/logos/caterpillar.jpg', 2),
+    ('Ford', '/brands/logos/ford.jpeg', 2),
+    ('Freightliner', '/brands/logos/freightliner,jpg', 2),
+    ('Hino', '/brands/logos/hino.jpg', 2),
+    ('International', '/brands/logos/international.jpg', 2),
+    ('Mercedes', '/brands/logos/mercedes.jpeg', 2),
+    ('Peterbilt', '/brands/logos/peterbilt.jpg', 2),
+    ('Toyota', '/brands/logos/toyota.png', 2),
+    ('Volvo', '/brands/logos/volvo.jpg', 2);
 
 
