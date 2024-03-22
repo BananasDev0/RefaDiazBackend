@@ -46,6 +46,11 @@ INSERT INTO brand (name,image_url,brand_type_id) VALUES
     ('Ferrari','/brands/logos/ferrari.jpg',1),
     ('Seat','/brands/logos/seat.png',1),
     ('Peugot','/brands/logos/peugeot.jpg',1),
-    ('Mazda','/brands/logos/mazda.jpg',1);
+    ('Mazda','/brands/logos/mazda.jpg',1),
+    ('Case', '/brands/logos/case.jpg', 2),
+    ('John Deere', '/brands/logos/john_deere.jpg', 2),
+    ('Kenworth', '/brands/logos/kenworth.jpg', 2),
+    ('Perkins', '/brands/logos/perkins.jpg', 2),
+    ('Scania', '/brands/logos/scania.jpg', 2);
 
 
