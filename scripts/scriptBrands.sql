@@ -2,7 +2,15 @@ INSERT INTO brand_type (type) VALUES
 ('Automotive'),
 ('Heavy-Duty');
 
-INSERT INTO brand (name,image_url,brand_type_id) VALUES 
+INSERT INTO brand (name,image_url,brand_type_id) VALUES
+    ('GM', '/brands/logos/gm.jpg', 1),
+    ('Acura', '/brands/logos/acura.jpg', 1),
+    ('Pontiac', 'brands/logos/pontiac.jpg', 1),
+    ('Chrysler', '/brands/logos/chrysler.jpg', 1),
+    ('Daewoo', '/brands/logos/daewoo.jpg', 1), 
+    ('Infinity', '/brands/logos/infinity.jpg', 1),
+    ('Saab', '/brands/logos/saab.jpg', 1),
+    ('Subaru', '/brands/logos/subaru.jpg', 1),
     ('Honda','/brands/logos/honda.png',1),
     ('Suzuki','/brands/logos/suzuki.jpg',1),
     ('Hyundai','/brands/logos/hyundai.jpg',1),
