@@ -11,22 +11,24 @@ Provider.init(
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
+            
+
         },
         name: {
             type: DataTypes.STRING,
-            
+            field : 'name'
         },
         phoneNumber: {
             type: DataTypes.STRING,
-            
+            field : 'phone_number'
         },
         address: {
             type: DataTypes.STRING,
-            
+            field : 'address'
         },
         comments: {
             type: DataTypes.STRING,
-            
+            field : 'comments'
         },
         active: {
             type: DataTypes.INTEGER
