@@ -1,8 +1,7 @@
 import Vehicle from "../models/vehicle.js";
-import VehicleModel from "../models/vehicle_model.js";
+import VehicleModel from "../models/vehicleModel.js";
 import Brand from "../models/brand.js";
 import sequelize from '../config/dbConnection.js';
-
 
 const createVehicleModel = async (req, res) => {
     try {
@@ -29,22 +28,18 @@ const createVehicleModel = async (req, res) => {
         res.status(201).send(car.toJSON());
     } catch (error) {
 
-        console.error('Error creating new user:', error);
+        console.error('Error creating new car:', error);
        
-        res.status(500).send('Error creating new user: ' + error.message);
+        res.status(500).send('Error creating new car: ' + error.message);
     }
 };
 
 const getAll = async (req, res) => {
     try {
-        const vehicles = await Vehicle.findAll({
+        const vehicles = await VehicleModel.findAll({
             include: [{
-                model: VehicleModel,
-                as: 'vehicleModel',
-                include: [{
-                    model: Brand,
-                    as: 'brand'
-                }]
+                model: Vehicle, 
+                as: 'vehicle'
             }]
         });
         res.status(200).send(vehicles);
@@ -64,10 +59,7 @@ const getVehicleModel = async (req, res) => {
             include: [{
                 model: Vehicle,
                 as: 'vehicle'
-            }, {
-                model: Brand,
-                as: 'brand'
-            }] 
+            }]
         });
        
         if (!vehicleModel) {
@@ -123,4 +115,3 @@ const deleteVehicle = async (req, res) => {
 };
 
 export { createVehicleModel, getAll, getVehicleModel, updateVehicle, deleteVehicle };
-
