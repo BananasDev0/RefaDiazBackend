@@ -1,5 +1,5 @@
 CREATE TABLE control_fields(
-    active BIT,
+    active boolean,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -28,7 +28,7 @@ CREATE TABLE product(
 ) INHERITS (control_fields);
 
 CREATE TABLE radiator(
-    dpi UUID PRIMARY KEY,
+    dpi VARCHAR(50) PRIMARY KEY,
     product_id INT,
     FOREIGN KEY (product_id) REFERENCES product(id)
 ) INHERITS (control_fields);

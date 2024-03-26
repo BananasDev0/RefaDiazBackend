@@ -1,22 +1,38 @@
+import { Op } from "sequelize";
 import sequelize from "../config/dbConnection.js";
 import Product from "../models/product.js";
 import Radiator from "../models/radiator.js";
 
-const getAllRadiator = async(req,res) => {
+const getAllRadiator = async (req, res) => {
     try {
-        const radiators = await Radiator.findAll({
+        const { name } = req.query; // Obtiene el parámetro "name" de la consulta
+
+        // Construye el objeto de opciones de consulta basado en la presencia del parámetro "name"
+        let queryOptions = {
             include: [{
-                model : Product,
-                as : 'product'
+                model: Product,
+                as: 'product',
+                where: {}
             }]
-        });
-            
+        };
+
+        if (name) {
+            queryOptions.include[0].where.productName = {
+                // Utiliza 'Op.iLike' para búsquedas insensibles a mayúsculas/minúsculas (solo PostgreSQL)
+                // Cambia a 'Op.like' si tu DB no soporta 'Op.iLike'
+                [Op.iLike]: `%${name}%` // Busca cualquier coincidencia que contenga "name"
+            };
+        }
+
+        const radiators = await Radiator.findAll(queryOptions);
+
         res.status(200).send(radiators);
     } catch (error) {
-        console.error('Error retrieving radiators: ', error)
+        console.error('Error retrieving radiators:', error);
         res.status(500).send(error.message);
     }
-}
+};
+
 
 const getRadiator = async(req, res) => {
     try{
