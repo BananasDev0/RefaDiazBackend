@@ -8,19 +8,17 @@ const getAll = async (req, res) => {
             include : [{
                 model : BrandType,
                 as: 'brand_type'
-            }]
-
+            }],
+            order: [['name', 'ASC']]
         });
-        
-        
-        
       
         res.status(200).send(brands); 
     } catch (error) {
         console.error('Error al recuperar las marcas:', error);
         res.status(500).send(error.message);
     }
-}
+};
+
 const getBrand = async(req, res) => {
     try {
         const brandId = req.params.id;
