@@ -6,6 +6,8 @@ import radiatorRouter from "./radiatorRoutes.js";
 import userRouter from "./userRoutes.js";
 
 function buildRouter(app) {
+    app.use('/api', userRouter);
+    app.use('/api', radiatorRouter);
     app.use('/api', productRouter);
     app.use('/api', clientRouter);
     app.use('/api', brandRouter);
