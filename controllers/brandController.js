@@ -4,12 +4,17 @@ import BrandType from "../models/brandType.js";
 
 const getAll = async (req, res) => {
     try {
+        let orderDirection = 'ASC'; 
+        if (req.query.order === 'desc') {
+            orderDirection = 'DESC';
+        }
+
         const brands = await Brand.findAll({
             include : [{
                 model : BrandType,
                 as: 'brand_type'
             }],
-            order: [['name', 'ASC']]
+            order: [['name', orderDirection]]
         });
       
         res.status(200).send(brands); 
@@ -18,6 +23,7 @@ const getAll = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
 
 const getBrand = async(req, res) => {
     try {
