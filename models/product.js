@@ -10,7 +10,7 @@ Product.init(
             autoIncrement: true,
             primaryKey: true
         },
-        productName: {
+        name: {
             type: DataTypes.STRING,
             field: 'product_name'
         },
