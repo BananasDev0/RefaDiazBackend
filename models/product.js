@@ -12,7 +12,7 @@ Product.init(
         },
         name: {
             type: DataTypes.STRING,
-            field: 'product_name'
+            field: 'name'
         },
        // dpi: {
        //     type: DataTypes.STRING
