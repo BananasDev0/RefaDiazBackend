@@ -17,7 +17,7 @@ const getAllRadiator = async (req, res) => {
         };
 
         if (name) {
-            queryOptions.include[0].where.productName = {
+            queryOptions.include[0].where.name = {
                 // Utiliza 'Op.iLike' para búsquedas insensibles a mayúsculas/minúsculas (solo PostgreSQL)
                 // Cambia a 'Op.like' si tu DB no soporta 'Op.iLike'
                 [Op.iLike]: `%${name}%` // Busca cualquier coincidencia que contenga "name"
