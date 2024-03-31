@@ -19,7 +19,7 @@ CREATE TABLE brand(
 
 CREATE TABLE product(
     id SERIAL PRIMARY KEY,
-    product_name VARCHAR(300),
+    name VARCHAR(300),
     brand_id INT,
     image_url VARCHAR(5000),
     comments VARCHAR(5000),
