@@ -15,19 +15,22 @@ ProviderProduct.init(
             primaryKey: true
         },
         productId: {
-            type: DataTypes.INTEGER
-            
+            type: DataTypes.INTEGER,
+            field : 'product_id'
         },
         priceId: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            field: 'price_id'
             
         },
         providerId: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            field : 'provider_id'
             
         },
         numSeries: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            field : 'num_series'
             
         },
 
