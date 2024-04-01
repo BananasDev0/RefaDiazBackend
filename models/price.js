@@ -12,18 +12,21 @@ Price.init(
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
+            
         },
         cost: {
             type: DataTypes.DOUBLE,
-            field: 'type'
+            field: 'cost'
         },
         material: {
             type: DataTypes.STRING,
+            field:'material'
             
         },
         // Agregar el priceType Id es inecesario por que se mapea desde la bd 
         priceTypeId: {
             type: DataTypes.INTEGER,
+            field:'price_type_id'
             
         },
 
