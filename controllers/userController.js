@@ -13,7 +13,11 @@ const createNewUser = async (req, res) => {
                 include: [{
                     model: Person,
                     as: 'person'
-                }], // Indica a Sequelize que incluya el modelo Person en la operación
+                },{
+                    model:Role,
+                    as: 'role'
+                }
+            ], // Indica a Sequelize que incluya el modelo Person en la operación
                 transaction: t
             });
             console.log(newUser.toJSON())
