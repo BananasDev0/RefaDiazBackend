@@ -7,6 +7,15 @@ import sequelize from '../config/dbConnection.js';
 const createNewUser = async (req, res) => {
     try {
         const userData = req.body;
+
+        if (userData.role === 1) {
+            userData.role = "Administrador";
+        } else if (userData.role === 2) {
+            userData.role = "Empleado";
+        } else {
+            console.log("no existe ese id");
+        }
+
         const user = await sequelize.transaction(async (t) => {
             // Crea el usuario y la persona asociada en una sola operación
             const newUser = await User.create(userData, {
@@ -26,12 +35,11 @@ const createNewUser = async (req, res) => {
 
         res.status(201).send(user.toJSON());
     } catch (error) {
-
         console.error('Error creating new user:', error);
-       
         res.status(500).send('Error creating new user: ' + error.message);
     }
 };
+
 
 const getAll = async (req, res) => {
     try {
