@@ -4,6 +4,12 @@ CREATE TABLE control_fields(
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE role(
+    id SERIAL PRIMARY KEY,
+    description varchar(100)
+)INHERITS(control_fields);
+
+
 CREATE TABLE brand_type(
     id SERIAL PRIMARY KEY,
     type VARCHAR(100)
@@ -91,7 +97,9 @@ CREATE TABLE person(
 CREATE TABLE "user"(
     id varchar(500) PRIMARY KEY,
     person_id INT,
+    role_id INT,
     FOREIGN KEY (person_id) REFERENCES person(id)
+    FOREIGN KEY (role_id) REFERENCES role(id)
 ) INHERITS (control_fields);
 
 CREATE TABLE vehicle_model(

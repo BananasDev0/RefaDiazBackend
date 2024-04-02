@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import Person from "../models/person.js";
+import Role from "../models/role.js";
 import sequelize from '../config/dbConnection.js';
 
 
@@ -12,7 +13,11 @@ const createNewUser = async (req, res) => {
                 include: [{
                     model: Person,
                     as: 'person'
-                }], // Indica a Sequelize que incluya el modelo Person en la operación
+                },{
+                    model:Role,
+                    as: 'role'
+                }
+            ], // Indica a Sequelize que incluya el modelo Person en la operación
                 transaction: t
             });
             console.log(newUser.toJSON())
@@ -34,6 +39,9 @@ const getAll = async (req, res) => {
             include: [{
                 model: Person,
                 as: 'person'
+            },{
+                model: Role,
+                as: 'role'
             }]
         });
         res.status(200).send(users);
@@ -53,6 +61,9 @@ const getUser = async(req, res) => {
             include: [{
                 model: Person,
                 as: 'person'
+            },{
+                model:Role,
+                as: 'role' 
             }] 
         });
        
