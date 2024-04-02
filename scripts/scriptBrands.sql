@@ -56,3 +56,6 @@ INSERT INTO brand (name,image_url,brand_type_id) VALUES
     ('Volvo', '/brands/logos/volvo.jpg', 2);
 
 
+INSERT INTO role(description) VALUES
+('ADMINISTRADOR'),
+('ASISTENTE');
