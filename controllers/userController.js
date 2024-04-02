@@ -8,14 +8,6 @@ const createNewUser = async (req, res) => {
     try {
         const userData = req.body;
 
-        if (userData.role === 1) {
-            userData.role = "Administrador";
-        } else if (userData.role === 2) {
-            userData.role = "Empleado";
-        } else {
-            console.log("no existe ese id");
-        }
-
         const user = await sequelize.transaction(async (t) => {
             // Crea el usuario y la persona asociada en una sola operación
             const newUser = await User.create(userData, {
