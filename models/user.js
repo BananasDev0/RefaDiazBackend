@@ -11,21 +11,23 @@ User.init(
             type: DataTypes.STRING,
             primaryKey: true,
         },
-        person_id: {
+        personId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: Person,
                 key: 'id'
-            }
+            },
+            field: 'person_id'
         },
-        role_id:{
+        roleId:{
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: Role,
                 key: 'id'
-            }
+            },
+            field: 'role_id'
         },
         active: {
             type: DataTypes.INTEGER
@@ -41,10 +43,10 @@ User.init(
     }
 );
 
-User.belongsTo(Person, { as: 'person', foreignKey: 'person_id' });
-Person.hasOne(User, { as: 'user', foreignKey: 'person_id' });
+User.belongsTo(Person, { as: 'person', foreignKey: 'personId' });
+Person.hasOne(User, { as: 'user', foreignKey: 'personId' });
 
-User.belongsTo(Role, {as:'role', foreignKey:'role_id'});
-Role.hasOne(User, { as: 'user', foreignKey: 'role_id' });
+User.belongsTo(Role, {as:'role', foreignKey:'roleId'});
+Role.hasOne(User, { as: 'user', foreignKey: 'roleId' });
 
 export default User;
