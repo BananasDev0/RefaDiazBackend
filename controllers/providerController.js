@@ -19,7 +19,7 @@ const getProvider = async(req, res) => {
         })
         
         if(!provider) {
-            res.status(500).send("Resource not found.");
+            res.status(404).send("Resource not found.");
         } else {
             res.status(200).send(provider)
         }
