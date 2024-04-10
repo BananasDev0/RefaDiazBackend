@@ -19,7 +19,7 @@ Provider.init(
             field : 'name'
         },
         phoneNumber: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             field : 'phone_number'
         },
         address: {
