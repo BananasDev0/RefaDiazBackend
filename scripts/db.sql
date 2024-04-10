@@ -62,7 +62,7 @@ CREATE TABLE product_price(
 CREATE TABLE provider(
     id SERIAL PRIMARY KEY,
     name VARCHAR(500),
-    phone_number INT,
+    phone_number VARCHAR(20),
     address VARCHAR(700),
     comments VARCHAR(500)
 ) INHERITS (control_fields);
