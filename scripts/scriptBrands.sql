@@ -50,7 +50,7 @@ INSERT INTO brand (name,image_url,brand_type_id) VALUES
     ('Peterbilt', '/brands/logos/peterbilt.png', 2),
     ('Toyota', '/brands/logos/toyota.png', 2),
     ('Volvo', '/brands/logos/volvo.jpg', 2),
-    ('Baic', '/brands/logos/baic.png');
+    ('Baic', '/brands/logos/baic.png', 1);
 
 
 INSERT INTO role(description) VALUES
