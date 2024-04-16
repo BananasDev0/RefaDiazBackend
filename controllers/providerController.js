@@ -2,7 +2,27 @@ import Provider from '../models/provider.js';
 
 const getAll = async(req, res) => {
     try{
-        const providers = await Provider.findAll();
+        const { page=1, limit=10 } = req.query;
+
+        const offset = (parseInt(page) - 1) * parseInt(limit);
+        
+       
+        const totalCount = await Provider.count();
+
+        if (offset >= totalCount) {
+            return res.status(200).send({ message: "No hay más resultados disponibles." });
+        }
+        
+       
+        const providers = await Provider.findAll({
+            offset: offset,
+            limit: parseInt(limit)
+        });
+
+
+        ///const providers = await Provider.findAll();
+        
+
         res.status(200).send(providers);
     } catch(error) {
         res.status(500).send(error.message);
