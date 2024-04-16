@@ -3,11 +3,9 @@ INSERT INTO brand_type (type) VALUES
 ('Heavy-Duty');
 
 INSERT INTO brand (name,image_url,brand_type_id) VALUES
-    ('GM', '/brands/logos/gm.png', 1),
     ('Acura', '/brands/logos/acura.png', 1),
     ('Pontiac', 'brands/logos/pontiac.png', 1),
-    ('Chrysler', '/brands/logos/chrysler.jpg', 1),
-    ('Daewoo', '/brands/logos/daewoo.jpg', 1), 
+    ('Chrysler / Jeep', '/brands/logos/chrysler.jpg', 1),
     ('Infiniti', '/brands/logos/infiniti.jpg', 1),
     ('Saab', '/brands/logos/saab.jpg', 1),
     ('Subaru', '/brands/logos/subaru.png', 1),
@@ -23,8 +21,6 @@ INSERT INTO brand (name,image_url,brand_type_id) VALUES
     ('Ford','/brands/logos/ford.jpeg',1),
     ('MG','/brands/logos/mg.jpg',1),
     ('Audi','/brands/logos/audi.jpg',1),
-    ('Mahindra','brands/logos/mahindra.jpg',1),
-    ('Jeep','/brands/logos/jeep.jpg',1),
     ('Kia','/brands/logos/kia.jpg',1),
     ('Porsche','/brands/logos/porsche.jpg',1),
     ('Land Rover','/brands/logos/land_rover.png',1),
@@ -34,7 +30,7 @@ INSERT INTO brand (name,image_url,brand_type_id) VALUES
     ('Isuzu','/brands/logos/isuzu.jpg',1),
     ('Volvo','/brands/logos/volvo.jpg',1),
     ('Lexus','/brands/logos/lexus.jpg',1),
-    ('Chevrolet','/brands/logos/chevrolet.png',1),
+    ('Chevrolet / GM','/brands/logos/chevrolet.png',1),
     ('Datsun','/brands/logos/datsun.png',1),
     ('Mitsubishi','/brands/logos/mitsubishi.jpg',1),
     ('Seat','/brands/logos/seat.png',1),
@@ -53,7 +49,8 @@ INSERT INTO brand (name,image_url,brand_type_id) VALUES
     ('Mercedes', '/brands/logos/mercedes.jpeg', 2),
     ('Peterbilt', '/brands/logos/peterbilt.png', 2),
     ('Toyota', '/brands/logos/toyota.png', 2),
-    ('Volvo', '/brands/logos/volvo.jpg', 2);
+    ('Volvo', '/brands/logos/volvo.jpg', 2),
+    ('Baic', '/brands/logos/baic.jpg', 1);
 
 
 INSERT INTO role(description) VALUES
