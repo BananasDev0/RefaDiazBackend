@@ -5,6 +5,7 @@ import vehicleModelRouter from "./vehicleModelRoutes.js";
 import radiatorRouter from "./radiatorRoutes.js";
 import userRouter from "./userRoutes.js";
 import providerRouter from "./providerRoutes.js";
+import productPriceRouter from "./productPriceRoutes.js";
 
 function buildRouter(app) {
     app.use('/api', userRouter);
@@ -14,6 +15,7 @@ function buildRouter(app) {
     app.use('/api', brandRouter);
     app.use('/api', vehicleModelRouter);
     app.use('/api',providerRouter);
+    app.use('/api',productPriceRouter);
 }
 
 export default buildRouter

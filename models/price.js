@@ -18,17 +18,17 @@ Price.init(
             type: DataTypes.DOUBLE,
             field: 'cost'
         },
-        material: {
+        description: {
             type: DataTypes.STRING,
-            field:'material'
+            field:'description'
             
         },
         // Agregar el priceType Id es inecesario por que se mapea desde la bd 
-        priceTypeId: {
+       /* priceTypeId: {
             type: DataTypes.INTEGER,
             field:'price_type_id'
             
-        },
+        },*/
 
         active: {
             type: DataTypes.INTEGER
@@ -44,7 +44,7 @@ Price.init(
     }
 );
 
-Price.belongsTo(PriceType, { as: 'price_type', foreignKey: 'price_type_id' });
-PriceType.hasMany(Price, { as: 'price', foreignKey: 'price_type_id' });
+//Price.belongsTo(PriceType, { as: 'price_type', foreignKey: 'price_type_id' });
+//PriceType.hasMany(Price, { as: 'price', foreignKey: 'price_type_id' });
 
 export default Price;
