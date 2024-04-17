@@ -4,20 +4,20 @@ import BrandType from "../models/brandType.js";
 
 const getAll = async (req, res) => {
     try {
-        let orderDirection = 'ASC'; 
+        let orderDirection = 'ASC';
         if (req.query.order === 'desc') {
             orderDirection = 'DESC';
         }
 
         const brands = await Brand.findAll({
-            include : [{
-                model : BrandType,
+            include: [{
+                model: BrandType,
                 as: 'brand_type'
             }],
             order: [['name', orderDirection]]
         });
-      
-        res.status(200).send(brands); 
+
+        res.status(200).send(brands);
     } catch (error) {
         console.error('Error al recuperar las marcas:', error);
         res.status(500).send(error.message);
@@ -25,24 +25,24 @@ const getAll = async (req, res) => {
 };
 
 
-const getBrand = async(req, res) => {
+const getBrand = async (req, res) => {
     try {
         const brandId = req.params.id;
-        const brand = await Brand.findOne({ 
-            where: { 
-                id: brandId 
+        const brand = await Brand.findOne({
+            where: {
+                id: brandId
             },
-            include:[{
-                model : BrandType,
+            include: [{
+                model: BrandType,
                 as: 'brand_type'
-            }] 
+            }]
         });
-       
-        if(!brand) {
+
+        if (!brand) {
             res.status(404).send('Resource not found.');
             console.log("Resource not found.");
         } else {
-            res.status(200).send(brand);    
+            res.status(200).send(brand);
         }
 
     } catch (error) {
@@ -50,7 +50,7 @@ const getBrand = async(req, res) => {
     }
 }
 
-const createNewBrand = async(req, res) => {
+const createNewBrand = async (req, res) => {
     try {
         const brandData = req.body;
         const brand = await Brand.create(brandData);
@@ -69,24 +69,23 @@ const updateBrand = async (req, res) => {
 
         if (!brand) {
             res.status(404).send("Resource not found.");
-        } 
+        } else {
+            const updatedBrandType = updatedData.brandType;
+            delete updatedData.brandType;
 
-        const updatedBrandType = updatedData.brandType;
-        delete updatedData.brandType;
+            await sequelize.transaction(async (t) => {
+                await brand.update(updatedData, { transaction: t });
 
-        await sequelize.transaction(async (t)=> {
-            await brand.update(updatedData,{transaction:t});
+                if (updatedBrandType) {
+                    await brand.brandType.update(updatedBrandType, { transaction: t })
+                }
 
-            if(updatedBrandType){
-                await brand.brandType.update(updatedBrandType,{transaction:t})
-            }
+            });
 
-        });
+            const updatedBrand = await Brand.findByPk(brandId, { include: [{ model: BrandType, as: 'brand_type' }] });
+            res.status(204).send(updatedBrand);
+        }
 
-        const updatedBrand = await Brand.findByPk(brandId,{include: [{model:BrandType, as:'brand_type'}]});
-        
-        res.status(200).send(updatedBrand);
-        
 
     } catch (error) {
         console.error('Error al actualizar la marca:', error);
@@ -94,12 +93,12 @@ const updateBrand = async (req, res) => {
     }
 }
 
-const deleteBrand = async(req, res) => {
+const deleteBrand = async (req, res) => {
     try {
         const brandId = req.params.id;
         const brand = await Brand.findByPk(brandId)
 
-        if(!brand) {
+        if (!brand) {
             res.status(404).send('Resource not found.');
         } else {
             await brand.destroy();
