@@ -46,10 +46,8 @@ CREATE TABLE price_type(
 
 CREATE TABLE price(
     id SERIAL PRIMARY KEY,
-    price_type_id INT NOT NULL,
-    cost INT,
-    material VARCHAR(400),
-    FOREIGN KEY (price_type_id) REFERENCES price_type(id)
+    cost MONEY,
+    description VARCHAR(400),
 ) INHERITS (control_fields);
 
 CREATE TABLE product_price(
