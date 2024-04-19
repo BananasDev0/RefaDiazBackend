@@ -72,12 +72,6 @@ const getProductPriceByProduct = async(req, res) => {
     }   
 }
 
-
-
-
-
-
-
 const createProductPrice = async(req, res) => {
     try{
         const productPriceData = req.body;
@@ -98,8 +92,6 @@ const createProductPrice = async(req, res) => {
         res.status(500).send(error.message);
     }
 }
-
-
 
 const deleteProductPrice = async(req, res) => {
     try {
