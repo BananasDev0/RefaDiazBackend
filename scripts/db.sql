@@ -124,3 +124,11 @@ CREATE TABLE client_vehicle(
     FOREIGN KEY (client_id) REFERENCES client(id)
 ) INHERITS (control_fields);
 
+CREATE TABLE product_vehicle_model (
+    product_id INT NOT NULL,
+    vehicle_model_id INT NULL,
+    initial_year INT,
+    last_year INT,
+    FOREIGN KEY (product_id) REFERENCES product(id),
+    FOREIGN KEY (vehicle_model_id) REFERENCES vehicle_model(id)
+) INHERITS (control_fields);
