@@ -1,20 +1,20 @@
 import express from 'express';
-import { getAll, createProviderProduct } from '../controllers/providerProductController.js';
+import { getAll, createProviderProduct, getProductById, updateProviderProduct, deleteProviderProduct } from '../controllers/providerProductController.js';
 
 // Crea una instancia del router de Express
 const providerProductRouter = express.Router();
 
-// Define la ruta para obtener todos los productos y asocia el controlador
-// productRouter.get('/products', getAllProducts);
+
 
 providerProductRouter.get('/providerProducts', getAll);
-// providerProduct.get('/product/:id', getProduct);
+providerProductRouter.get('/product/:id/providers', getProductById);
 
 providerProductRouter.post('/providerProduct', createProviderProduct);
 
-// providerProduct.put('/product/:id', updateProduct);
+providerProductRouter.put('/providerProduct/:id', updateProviderProduct);
 
-// providerProduct.delete('/product/:id', deleteProduct);
+providerProductRouter.delete('/providerProduct/:id', deleteProviderProduct);
+
 
 // Exporta el router
 export default providerProductRouter;

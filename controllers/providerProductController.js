@@ -24,6 +24,36 @@ const getAll = async (req, res) => {
     }
 }
 
+const getProductById = async (req, res) => {
+    try {
+        const productId = req.params.id; 
+        
+        const providerProduct = await ProviderProduct.findAll({
+            where: {
+                productId: productId
+            },
+            include: [
+                {
+                    model: Product,
+                    as: 'product'
+                },
+                {
+                    model: Price,
+                    as: 'price'
+                }
+            ]
+        });
+
+        if (!providerProduct) {
+            return res.status(404).send("No se encontró un providerProduct para el producto especificado");
+        }
+        res.status(200).send(providerProduct);
+    } catch (error) {
+        console.error("Error al obtener el providerProduct:", error);
+        res.status(500).send("Error al obtener el providerProduct");
+    }
+}
+
 const createProviderProduct = async (req, res) => {
     try {
         const { productId, providerId, priceId, ...providerProductData } = req.body;
@@ -62,4 +92,50 @@ const createProviderProduct = async (req, res) => {
     }
 }
 
-export { getAll, createProviderProduct};
+const deleteProviderProduct = async (req, res) => {
+    try {
+        const providerProductId = req.params.id; // ID del providerProduct a eliminar
+        
+        // Buscar el providerProduct a eliminar
+        const providerProductToDelete = await ProviderProduct.findByPk(providerProductId);
+
+        // Verificar si el providerProduct existe
+        if (!providerProductToDelete) {
+            return res.status(404).send("El providerProduct especificado no existe");
+        }
+
+        // Eliminar el providerProduct
+        await providerProductToDelete.destroy();
+
+        res.status(200).send("ProviderProduct eliminado exitosamente");
+    } catch (error) {
+        console.error("Error al eliminar el providerProduct:", error);
+        res.status(500).send("Error al eliminar el providerProduct");
+    }
+}
+
+const updateProviderProduct = async (req, res) => {
+    try {
+        const providerProductId = req.params.id; // ID del providerProduct a actualizar
+        const newData = req.body; // Nuevos datos para actualizar
+
+        // Buscar el providerProduct a actualizar
+        const providerProductToUpdate = await ProviderProduct.findByPk(providerProductId);
+
+        // Verificar si el providerProduct existe
+        if (!providerProductToUpdate) {
+            return res.status(404).send("El providerProduct especificado no existe");
+        }
+
+        // Actualizar el providerProduct con los nuevos datos
+        await providerProductToUpdate.update(newData);
+
+        res.status(200).send(providerProductToUpdate);
+    } catch (error) {
+        console.error("Error al actualizar el providerProduct:", error);
+        res.status(500).send("Error al actualizar el providerProduct");
+    }
+}
+
+export { getAll, createProviderProduct, getProductById, deleteProviderProduct, updateProviderProduct };
+
