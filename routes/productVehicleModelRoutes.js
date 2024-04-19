@@ -4,14 +4,14 @@ import {getAll,getProductVehicleModel,createProductVehicleModel,deleteProductVeh
 
 const productVehicleModelRouter = express.Router();
 
-productVehicleModelRouter.get('/productvehiclemodels',getAll);
-productVehicleModelRouter.get('/product/:productId/vehiclemodel/:vehicleModelId',getProductVehicleModel); 
+productVehicleModelRouter.get('/products/models',getAll);
+productVehicleModelRouter.get('/product/:productId/model/:vehicleModelId',getProductVehicleModel); 
 
 
-productVehicleModelRouter.post('/productvehiclemodel',createProductVehicleModel);
+productVehicleModelRouter.post('/products/models',createProductVehicleModel);
 
-productVehicleModelRouter.put('/product/:productId/vehiclemodel/:vehicleModelId',updateProductVehicleModel); /////  odificar para que solo edite el price , y no haga nada en el productprice
+productVehicleModelRouter.put('/product/:productId/model/:vehicleModelId',updateProductVehicleModel); 
 
-productVehicleModelRouter.delete('/product/:productId/vehiclemodel/:vehicleModelId',deleteProductVehicleModel);
+productVehicleModelRouter.delete('/product/:productId/model/:vehicleModelId',deleteProductVehicleModel);
 
 export default productVehicleModelRouter;

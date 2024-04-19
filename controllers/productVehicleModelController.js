@@ -52,8 +52,8 @@ const deleteProductVehicleModel = async (req, res) => {
         const vehicleModelId = req.params.vehicleModelId;
         const productVehicleModel = await ProductVehicleModel.findOne({
             where:{
-                productId: productId,
-                vehicleModelId: vehicleModelId
+                product_id: productId,
+                vehicle_model_id: vehicleModelId
             }
         })
 
@@ -80,8 +80,8 @@ const updateProductVehicleModel = async (req, res) => {
 
         const productVehicleModel = await ProductVehicleModel.findOne({
             where:{
-                productId: productId,
-                vehicleModelId: vehicleModelId
+                product_id: productId,
+                vehicle_model_id: vehicleModelId
             }
         })
 
