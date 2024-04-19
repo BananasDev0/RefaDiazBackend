@@ -1,7 +1,6 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
 import Brand from './brand.js';
-import Vehicle from "./vehicle.js";
 
 class VehicleModel extends Sequelize.Model {}
 
