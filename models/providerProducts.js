@@ -2,6 +2,7 @@
 //la conexion tenemos que usar sequelize para definir el modelo
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
+import Price from "./price.js";
 import Provider from './provider.js'
 import Product from './product.js';
 
@@ -33,7 +34,6 @@ ProviderProduct.init(
             field : 'num_series'
             
         },
-
         active: {
             type: DataTypes.INTEGER
         },
@@ -49,7 +49,7 @@ ProviderProduct.init(
 );
 
 // Relación entre ProviderProduct y Price
-ProviderProduct.belongsTo(Provider, { as: 'price', foreignKey: 'provider_product_id' });
+ProviderProduct.belongsTo(Price, { as: 'price', foreignKey: 'provider_product_id' });
 Provider.hasMany(ProviderProduct, { as: 'provider_product', foreignKey: 'provider_product_id' });
 
 // Relación entre ProviderProduct y Product
@@ -59,8 +59,6 @@ Product.hasMany(ProviderProduct, { as: 'provider_product', foreignKey: 'provider
 // Relación entre ProviderProduct y Provider
 ProviderProduct.belongsTo(Provider, { as: 'provider', foreignKey: 'provider_product_id' });
 Provider.hasMany(ProviderProduct, { as: 'provider_product', foreignKey: 'provider_product_id' });
-
-
 
 
 export default ProductPrice;
