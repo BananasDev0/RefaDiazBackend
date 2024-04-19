@@ -1,6 +1,7 @@
 import sequelize from "../config/dbConnection.js";
 import Brand from "../models/brand.js";
 import BrandType from "../models/brandType.js";
+import VehicleModel from "../models/vehicleModel.js";
 
 const getAll = async (req, res) => {
     try {
@@ -111,4 +112,27 @@ const deleteBrand = async (req, res) => {
     }
 }
 
-export { createNewBrand, getAll, deleteBrand, getBrand, updateBrand };
+const getBrandVehicleModels = async (req, res) => { 
+    try {
+        const brandId = req.params.id;
+        const brand = await Brand.findByPk(brandId, {
+            include: [{
+                model: VehicleModel,
+                as: 'vehicleModel'
+            }]
+        });
+
+        if (!brand) {
+            res.status(404).send('Resource not found.');
+        } else {
+            res.status(200).send(brand['vehicleModel']);
+        }
+
+    } catch (error) {
+        console.error('Error al recuperar los modelos de vehículos de la marca:', error);
+        res.status(500).send(error.message);
+    }
+
+}
+
+export { createNewBrand, getAll, deleteBrand, getBrand, updateBrand, getBrandVehicleModels };
