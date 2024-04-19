@@ -1,5 +1,5 @@
 import express from 'express';
-import {getAll,getProductVehicleModel,createProductVehicleModel,deleteProductVehicleModel,updateProductVehicleModel} from '../controllers/productVehicleModelController.js';
+import {getAll,createProductVehicleModelList,getProductVehicleModel,createProductVehicleModel,deleteProductVehicleModel,updateProductVehicleModel} from '../controllers/productVehicleModelController.js';
 
 
 const productVehicleModelRouter = express.Router();
@@ -9,6 +9,7 @@ productVehicleModelRouter.get('/product/:productId/model/:vehicleModelId',getPro
 
 
 productVehicleModelRouter.post('/products/models',createProductVehicleModel);
+productVehicleModelRouter.post('/products/:productId/models',createProductVehicleModelList);
 
 productVehicleModelRouter.put('/product/:productId/model/:vehicleModelId',updateProductVehicleModel); 
 

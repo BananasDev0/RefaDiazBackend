@@ -1,4 +1,4 @@
-
+import sequelize from "../config/dbConnection.js";
 import ProductVehicleModel from "../models/productVehicleModel.js";
 
 const getAll = async (req,res) => {
@@ -99,5 +99,34 @@ const updateProductVehicleModel = async (req, res) => {
 };
 
 
+const createProductVehicleModelList = async (req, res) => {
+    const productId = req.params.productId;
+    const productVehicleModelDataList = req.body;
 
-export {getAll,getProductVehicleModel,createProductVehicleModel,deleteProductVehicleModel,updateProductVehicleModel} 
+    try {
+
+        const bulkData = productVehicleModelDataList.map(data => ({
+            productId: productId,
+            vehicleModelId: data.vehicleModelId,
+            initialYear: data.initialYear,
+            lastYear: data.lastYear,
+            active: data.active
+        }));
+
+
+        const createdModels = await ProductVehicleModel.bulkCreate(bulkData);
+
+        res.status(200).json(createdModels);
+    } catch (error) {
+        console.error('Error creating product vehicle models:', error);
+        res.status(500).send(error.message);
+    }
+}
+
+
+
+
+
+
+
+export {getAll,getProductVehicleModel,createProductVehicleModel,deleteProductVehicleModel,updateProductVehicleModel,createProductVehicleModelList} 
