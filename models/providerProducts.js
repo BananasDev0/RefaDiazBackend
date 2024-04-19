@@ -10,11 +10,6 @@ class ProviderProduct extends Sequelize.Model{};
 
 ProviderProduct.init(
     {
-        id:{
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
-        },
         productId: {
             type: DataTypes.INTEGER,
             field : 'product_id'
