@@ -9,7 +9,7 @@ productVehicleModelRouter.get('/product/:productId/model/:vehicleModelId',getPro
 
 
 productVehicleModelRouter.post('/products/models',createProductVehicleModel);
-productVehicleModelRouter.post('/products/:productId/models',createProductVehicleModelList);
+productVehicleModelRouter.post('/product/:productId/models',createProductVehicleModelList);
 
 productVehicleModelRouter.put('/product/:productId/model/:vehicleModelId',updateProductVehicleModel); 
 

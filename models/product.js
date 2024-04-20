@@ -23,18 +23,17 @@ Product.init(
             field: 'image_url'
         },
         active: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            defaultValue: 1
         },
     },
     {
-        sequelize: sequelize, // Aquí pasas tu instancia de Sequelize configurada
-        modelName: 'product', // El nombre del modelo en singular
-        tableName: 'product', // El nombre de la tabla en la base de datos
+        sequelize: sequelize,
+        modelName: 'product',
+        tableName: 'product',
         timestamps: false,
         createdAt: 'created_at',
         updatedAt: 'updated_at'
     }
 );
 export default Product;
-
-
