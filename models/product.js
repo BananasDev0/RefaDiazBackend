@@ -14,12 +14,9 @@ Product.init(
             type: DataTypes.STRING,
             field: 'name'
         },
-       // dpi: {
-       //     type: DataTypes.STRING
-       // },
-        brandId: {
-            type: DataTypes.INTEGER,
-            field: 'brand_id'
+        comments: {
+            type: DataTypes.STRING,
+            field: 'comments'
         },
         imageUrl: {
             type: DataTypes.STRING,
@@ -39,4 +36,5 @@ Product.init(
     }
 );
 export default Product;
+
 

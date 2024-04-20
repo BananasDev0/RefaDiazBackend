@@ -26,11 +26,9 @@ CREATE TABLE brand(
 CREATE TABLE product(
     id SERIAL PRIMARY KEY,
     name VARCHAR(300),
-    brand_id INT,
     image_url VARCHAR(5000),
     comments VARCHAR(5000),
-    stock_count INT,
-    FOREIGN KEY (brand_id) REFERENCES brand(id)
+    stock_count INT
 ) INHERITS (control_fields);
 
 CREATE TABLE radiator(
