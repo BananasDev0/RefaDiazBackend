@@ -2,7 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import productRouter from './routes/productRoutes.js';
+import buildRouter from './routes/index.js';
+import sequelize from './config/dbConnection.js';
+import firebaseTokenVerification from './middleware/auth.js';
 
 const app = express();
 
@@ -11,14 +13,20 @@ app.use(express.urlencoded({ extended: true })); // Para parsear application/x-w
 app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
+//app.use(firebaseTokenVerification);
 
 // Utiliza las rutas en tu aplicación Express
-app.use('/api', productRouter);
+buildRouter(app)
 
 app.listen(3000, () => {
   console.log('El servidor está corriendo en el puerto 3000');
 });
 
-app.get('/', (req, res) => {
-  res.send('Hola Mundo con Express!');
-});
+//prueba conexion a la bdd
+try {
+  sequelize.authenticate();
+  console.log('Conexion a la base de datos, exitosa');
+} catch (error) {
+  console.error('No se puedo conectar a la base de datos: ', error);
+}
+

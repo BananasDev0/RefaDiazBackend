@@ -1,81 +1,126 @@
-CREATE DATABASE REFADIAZDB
-
-USE REFADIAZDB
-
-CREATE TABLE Brand(
-    id int PRIMARY KEY NOT NULL,
-    brandName varchar(300)
+CREATE TABLE control_fields(
+    active boolean,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Product(
-    id int Primary key,
-    productName varchar(300),
-    dpi varchar(300),
-    brandId int,
-    imageUrl varchar(5000),
-    FOREIGN KEY (brandId) REFERENCES public.Brand(id)
-);
+CREATE TABLE role(
+    id SERIAL PRIMARY KEY,
+    description varchar(100)
+)INHERITS(control_fields);
 
-CREATE TABLE PriceType(
-    id int primary key,
-    priceName varchar(400)
-);
 
-CREATE TABLE Price(
-    id int primary key,
-    priceTypeId int not null,
-    cost int,
-    material varchar(400),
-    FOREIGN key (priceTypeId) REFERENCES public.PriceType(id)
-);
+CREATE TABLE brand_type(
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(100)
+) INHERITS (control_fields);
 
-CREATE TABLE ProductPrice(
-    productId int not null,
-    priceId int not null,
-    FOREIGN KEY (productId) REFERENCES public.Product(id),
-    FOREIGN KEY (priceId) REFERENCES public.Price(id)
-);
+CREATE TABLE brand(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(300),
+    image_url VARCHAR(5000),
+    brand_type_id INT NOT NULL,
+    FOREIGN KEY (brand_type_id) REFERENCES brand_type(id)
+) INHERITS (control_fields);
 
-CREATE TABLE Provider(
-    id int primary key,
-    providerName varchar(500),
-    phoneNumber int,
-    providerAddress varchar(700),
-    comments varchar(500)
-);
+CREATE TABLE product(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(300),
+    brand_id INT,
+    image_url VARCHAR(5000),
+    comments VARCHAR(5000),
+    stock_count INT,
+    FOREIGN KEY (brand_id) REFERENCES brand(id)
+) INHERITS (control_fields);
 
-CREATE TABLE ProviderProduct(
-    productId int not null,
-    priceId int not null,
-    providerId int not null,
-    numSeries varchar(3000),
-    FOREIGN key (productId) REFERENCES public.Product(id),
-    FOREIGN key (priceId) REFERENCES public.Price(id),
-    FOREIGN key (providerId) REFERENCES public.Provider(id)
-);
+CREATE TABLE radiator(
+    dpi VARCHAR(50) PRIMARY KEY,
+    product_id INT,
+    FOREIGN KEY (product_id) REFERENCES product(id)
+) INHERITS (control_fields);
 
-CREATE TABLE Vehicle(
-    id int primary key,
-    brandId int not null,
-    model varchar(400),
-    carVersion varchar(400),
-    carYear int,
-    FOREIGN key (brandId) REFERENCES public.Brand(id)
-);
+CREATE TABLE price_type(
+    id SERIAL PRIMARY KEY,
+    price_name VARCHAR(400)
+) INHERITS (control_fields);
 
-CREATE TABLE Client(
-    id int primary key,
-    clientName varchar(300),
-    phoneNumber int,
-    comments varchar(500) 
-);
+CREATE TABLE price(
+    id SERIAL PRIMARY KEY,
+    cost MONEY,
+    description VARCHAR(400),
+) INHERITS (control_fields);
 
-CREATE TABLE ClientVehicle(
-    vehicleId int not null,
-    clientId int not null,
-    color varchar(300),
-    plate varchar(600),
-    comments varchar(700),
-    FOREIGN key (vehicleId) REFERENCES public.Vehicle(id),
-    FOREIGN key (clientId) REFERENCES public.Client(id)
-);
+CREATE TABLE product_price(
+    product_id INT NOT NULL,
+    price_id INT NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES product(id),
+    FOREIGN KEY (price_id) REFERENCES price(id)
+) INHERITS (control_fields);
+
+CREATE TABLE provider(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(500),
+    phone_number VARCHAR(20),
+    address VARCHAR(700),
+    comments VARCHAR(500)
+) INHERITS (control_fields);
+
+CREATE TABLE provider_product(
+    product_id INT NOT NULL,
+    price_id INT NOT NULL,
+    provider_id INT NOT NULL,
+    num_series VARCHAR(3000),
+    FOREIGN KEY (product_id) REFERENCES product(id),
+    FOREIGN KEY (price_id) REFERENCES price(id),
+    FOREIGN KEY (provider_id) REFERENCES provider(id)
+) INHERITS (control_fields);
+
+CREATE TABLE client(
+    id SERIAL PRIMARY KEY,
+    client_name VARCHAR(300),
+    phone_number INT,
+    comments VARCHAR(500) 
+) INHERITS (control_fields);
+
+CREATE TABLE person(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200),
+    last_name VARCHAR(200),
+    birth_date DATE,
+    email VARCHAR(300),
+    phone_number VARCHAR(300),
+    address VARCHAR(300)
+) INHERITS (control_fields);
+
+CREATE TABLE "user"(
+    id varchar(500) PRIMARY KEY,
+    person_id INT,
+    role_id INT,
+    FOREIGN KEY (person_id) REFERENCES person(id)
+    FOREIGN KEY (role_id) REFERENCES role(id)
+) INHERITS (control_fields);
+
+CREATE TABLE vehicle_model(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    brand_id INT,
+    FOREIGN KEY (brand_id) REFERENCES brand(id)
+) INHERITS (control_fields);
+
+CREATE TABLE vehicle(
+    id SERIAL PRIMARY KEY,
+    vehicle_model_id INT,
+    version VARCHAR(300),
+    FOREIGN KEY (vehicle_model_id) REFERENCES vehicle_model(id)
+) INHERITS (control_fields);
+
+CREATE TABLE client_vehicle(
+    vehicle_id INT NOT NULL,
+    client_id INT NOT NULL,
+    color VARCHAR(300),
+    plate VARCHAR(600),
+    comments VARCHAR(700),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicle(id),
+    FOREIGN KEY (client_id) REFERENCES client(id)
+) INHERITS (control_fields);
+

@@ -1,0 +1,16 @@
+-- Comandos para eliminar tablas específicas, ajustando el orden para respetar las restricciones de clave foránea
+DROP TABLE IF EXISTS control_fields CASCADE;
+DROP TABLE IF EXISTS client_vehicle CASCADE;
+DROP TABLE IF EXISTS provider_product CASCADE;
+DROP TABLE IF EXISTS product_price CASCADE;
+DROP TABLE IF EXISTS radiator CASCADE;
+DROP TABLE IF EXISTS product CASCADE;
+DROP TABLE IF EXISTS price CASCADE;
+DROP TABLE IF EXISTS vehicle CASCADE;
+DROP TABLE IF EXISTS client CASCADE;
+DROP TABLE IF EXISTS provider CASCADE;
+DROP TABLE IF EXISTS price_type CASCADE;
+DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS person CASCADE;
+DROP TABLE IF EXISTS vehicle_model CASCADE;
+DROP TABLE IF EXISTS brand CASCADE;
