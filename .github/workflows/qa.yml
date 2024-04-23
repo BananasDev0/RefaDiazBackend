@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Save secret to file
-        run: echo "${{ secrets.QA_SSH }}" > private-key.pem
-
       - name: Checkout código
         uses: actions/checkout@v4
 
@@ -21,7 +18,7 @@ jobs:
         with:
           host: ${{ secrets.QA_HOST }}
           username: ${{ secrets.QA_USER }}
-          key: ./private-key.pem  # Usar la clave privada desde el archivo
+          key: ${{ secrets.QA_SSH }}
           port: ${{ secrets.QA_PORT }}
           source: "."
           target: "RefaDiaz/RefaDiazBackend"
@@ -31,7 +28,7 @@ jobs:
         with:
           host: ${{ secrets.QA_HOST }}
           username: ${{ secrets.QA_USER }}
-          key: ./private-key.pem  # Usar la clave privada desde el archivo
+          key: ${{ secrets.QA_SSH }}
           port: ${{ secrets.QA_PORT }}
           script: |
             cd RefaDiaz/RefaDiazBackend
