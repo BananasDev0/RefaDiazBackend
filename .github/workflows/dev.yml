@@ -1,36 +1,41 @@
-name: DEV Despliegue en EC2
+name: Despliegue en qa EC2
+
 
 on:
   push:
     branches:
-      - dev
+      - qa # Cambia 'main' por la rama que desees
+
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
+
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
 
+
       - name: Copiar archivos al servidor
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          host: ${{ secrets.QA_HOST }}
+          username: ${{ secrets.QA_USER }}
+          key: ${{ secrets.QA_SSH }}
+          port: ${{ secrets.QA_PORT }}
           source: "."
-          target: "projects/RefaDiaz"
+          target: "RefaDiaz"
+
 
       - name: Ejecutar comandos remotos
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          host: ${{ secrets.QA_HOST }}
+          username: ${{ secrets.QA_USER }}
+          key: ${{ secrets.QA_SSH }}
+          port: ${{ secrets.QA_PORT }}
           script: |
-            cd projects/RefaDiaz
+            cd RefaDiaz/RefaDiazBackend
             npm install
-            pm2 restart ecosystem.config.cjs
+            pm2 restart API
