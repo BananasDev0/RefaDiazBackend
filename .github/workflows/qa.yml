@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: QA_ENV
 
     steps:
       - name: Checkout código
@@ -16,20 +17,20 @@ jobs:
       - name: Copiar archivos al servidor
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.QA_HOST }}
-          username: ${{ secrets.QA_USER }}
-          key: ${{ secrets.QA_SSH }}
-          port: ${{ secrets.QA_PORT }}
+          host: ${{ env.QA_HOST }}
+          username: ${{ env.QA_USER }}
+          key: ${{ env.QA_SSH }}
+          port: ${{ env.QA_PORT }}
           source: "."
           target: "RefaDiaz/RefaDiazBackend"
 
       - name: Ejecutar comandos remotos
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.QA_HOST }}
-          username: ${{ secrets.QA_USER }}
-          key: ${{ secrets.QA_SSH }}
-          port: ${{ secrets.QA_PORT }}
+          host: ${{ env.QA_HOST }}
+          username: ${{ env.QA_USER }}
+          key: ${{ env.QA_SSH }}
+          port: ${{ env.QA_PORT }}
           script: |
             cd RefaDiaz/RefaDiazBackend
             npm install
