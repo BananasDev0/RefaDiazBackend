@@ -23,5 +23,16 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ec2-3-18-102-88.us-east-2.compute.amazonaws.com >> ~/.ssh/known_hosts
           for file in *; do
-            scp -i ~/.ssh/id_rsa "$file" ec2-user@ec2-3-18-102-88.us-east-2.compute.amazonaws.com:/home/ec2-user/RefaDiaz/RefaDiazBackend
+            scp -i ~/.ssh/id_rsa "$file" ec2-user@ec2-3-18-102-88.us-east-2.compute.amazonaws.com:/home/ec2-user/RefaDiaz/RefaDiazBackend/
           done
+
+      - name: Ejecutar comandos en la instancia EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ec2-3-18-102-88.us-east-2.compute.amazonaws.com
+          username: ec2-user
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /home/ec2-user/RefaDiaz/RefaDiazBackend/
+            npm install
+            pm2 restart API
