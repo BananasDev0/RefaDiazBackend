@@ -23,7 +23,7 @@ jobs:
           script: |
             set -x  # Habilita la traza de comandos
             ssh-keyscan -H ec2-3-18-102-88.us-east-2.compute.amazonaws.com >> ~/.ssh/known_hosts
-            scp -r . ec2-user@ec2-3-18-102-88.us-east-2.compute.amazonaws.com:/RefaDiaz/RefaDiazBackend
+            scp -r . ec2-user@ec2-3-18-102-88.us-east-2.compute.amazonaws.com:/home/ec2-user/RefaDiaz/RefaDiazBackend
             cd /RefaDiaz/RefaDiazBackend
             npm install
             pm2 restart API
