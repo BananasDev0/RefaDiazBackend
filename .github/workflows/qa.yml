@@ -1,4 +1,4 @@
-name: Despliegue en qa EC2
+name: Despliegue en QA EC2
 
 on:
   push:
@@ -14,12 +14,19 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
 
+      - name: Habilitar registros detallados
+        run: |
+          echo "Habilitando registros detallados..."
+          set -x  # Habilita la traza de comandos
+          env  # Muestra las variables de entorno
+          cat $GITHUB_EVENT_PATH  # Muestra el contenido del evento
+
       - name: Copiar archivos al servidor
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.QA_HOST }}
           username: ${{ secrets.QA_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.QA_SSH_PEM }}
           port: ${{ secrets.QA_PORT }}
           source: "."
           target: "/RefaDiaz/RefaDiazBackend"
@@ -29,9 +36,11 @@ jobs:
         with:
           host: ${{ secrets.QA_HOST }}
           username: ${{ secrets.QA_USER }}
-          key: ${{ secrets.QA_SSH }}
+          key: ${{ secrets.QA_SSH_PEM }}
           port: ${{ secrets.QA_PORT }}
           script: |
+            set -x  # Habilita la traza de comandos
+            ssh-keyscan -H ${{ secrets.QA_HOST }} >> ~/.ssh/known_hosts
             cd RefaDiaz/RefaDiazBackend
             npm install
             pm2 restart API
