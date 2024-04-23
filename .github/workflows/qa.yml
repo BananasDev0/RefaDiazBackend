@@ -8,29 +8,21 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: QA_ENV
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Copy files to QA EC2
+      - name: Copy files and execute remote commands
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.QA_HOST }}
-          username: ${{ secrets.QA_USER }}
+          host: ec2-3-18-102-88.us-east-2.compute.amazonaws.com
+          username: ec2-user
           key: ${{ secrets.SSH_KEY }}
           script: |
             set -x  # Habilita la traza de comandos
-            ssh-keyscan -H ${{ secrets.QA_HOST }} >> ~/.ssh/known_hosts
-            scp -r . ${{ secrets.QA_USER }}@${{ secrets.QA_HOST }}:/RefaDiaz/RefaDiazBackend
-
-      - name: Install dependencies and restart API
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.QA_HOST }}
-          username: ${{ secrets.QA_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            set -x  # Habilita la traza de comandos
-            ssh ${{ secrets.QA_USER }}@${{ secrets.QA_HOST }} "cd /RefaDiaz/RefaDiazBackend && npm install && pm2 restart API"
+            ssh-keyscan -H ec2-3-18-102-88.us-east-2.compute.amazonaws.com >> ~/.ssh/known_hosts
+            scp -r . ec2-user@ec2-3-18-102-88.us-east-2.compute.amazonaws.com:/RefaDiaz/RefaDiazBackend
+            cd /RefaDiaz/RefaDiazBackend
+            npm install
+            pm2 restart API
