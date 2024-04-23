@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: QA_ENV
 
     steps:
       - name: Checkout code
@@ -18,7 +19,7 @@ jobs:
         with:
           host: ec2-3-18-102-88.us-east-2.compute.amazonaws.com
           username: ec2-user
-          key: ${{ secrets.QA_APIKEYS_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
             set -x  # Habilita la traza de comandos
             ssh-keyscan -H ec2-3-18-102-88.us-east-2.compute.amazonaws.com >> ~/.ssh/known_hosts
