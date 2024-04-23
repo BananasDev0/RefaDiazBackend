@@ -25,7 +25,7 @@ jobs:
           key: ${{ secrets.QA_SSH }}
           port: ${{ secrets.QA_PORT }}
           source: "."
-          target: "RefaDiaz"
+          target: "RefaDiaz/RefaDiazBackend"
 
 
       - name: Ejecutar comandos remotos
