@@ -26,7 +26,7 @@ jobs:
         with:
           host: ${{ secrets.QA_HOST }}
           username: ${{ secrets.QA_USER }}
-          key: ${{ secrets.QA_SSH_PEM }}
+          key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.QA_PORT }}
           source: "."
           target: "/RefaDiaz/RefaDiazBackend"
@@ -36,7 +36,7 @@ jobs:
         with:
           host: ${{ secrets.QA_HOST }}
           username: ${{ secrets.QA_USER }}
-          key: ${{ secrets.QA_SSH_PEM }}
+          key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.QA_PORT }}
           script: |
             set -x  # Habilita la traza de comandos
