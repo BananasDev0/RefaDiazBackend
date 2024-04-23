@@ -17,20 +17,20 @@ jobs:
       - name: Copiar archivos al servidor
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ environment.QA_HOST }}
-          username: ${{ environment.QA_USER }}
-          key: ${{ environment.QA_SSH }}
-          port: ${{ environment.QA_PORT }}
+          host: ${{ secrets.QA_HOST }}
+          username: ${{ secrets.QA_USER }}
+          key: ${{ secrets.QA_SSH }}
+          port: ${{ secrets.QA_PORT }}
           source: "."
           target: "RefaDiaz/RefaDiazBackend"
 
       - name: Ejecutar comandos remotos
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ environment.QA_HOST }}
-          username: ${{ environment.QA_USER }}
-          key: ${{ environment.QA_SSH }}
-          port: ${{ environment.QA_PORT }}
+          host: ${{ secrets.QA_HOST }}
+          username: ${{ secrets.QA_USER }}
+          key: ${{ secrets.QA_SSH }}
+          port: ${{ secrets.QA_PORT }}
           script: |
             cd RefaDiaz/RefaDiazBackend
             npm install
