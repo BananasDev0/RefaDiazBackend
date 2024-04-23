@@ -19,7 +19,7 @@ jobs:
         with:
           host: ${{ secrets.QA_HOST }}
           username: ${{ secrets.QA_USER }}
-          key: ${{ secrets.QA_SSH }}
+          key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.QA_PORT }}
           source: "."
           target: "/RefaDiaz/RefaDiazBackend"
