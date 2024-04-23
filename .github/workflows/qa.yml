@@ -1,38 +1,36 @@
-name: Despliegue en QA EC2
+name: Despliegue en EC2
 
 on:
   push:
     branches:
-      - qa
+      - qa # Cambia 'main' por la rama que desees
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: QA_ENV
 
     steps:
-      - name: Checkout code
+      - name: Checkout código
         uses: actions/checkout@v2
 
-      - name: Transferir archivos a la instancia de EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ec2-3-18-102-88.us-east-2.compute.amazonaws.com >> ~/.ssh/known_hosts
-          for file in *; do
-            scp -i ~/.ssh/id_rsa "$file" ec2-user@ec2-3-18-102-88.us-east-2.compute.amazonaws.com:/home/ec2-user/RefaDiaz/RefaDiazBackend/
-          done
+      - name: Copiar archivos al servidor
+        uses: appleboy/scp-action@master
+        with:
+          host: ec2-3-18-102-88.us-east-2.compute.amazonaws.com
+          username: ec2-user
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          source: "."
+          target: "/RefaDiaz/RefaDiazBackend"
 
-      - name: Ejecutar comandos en la instancia EC2
+      - name: Ejecutar comandos remotos
         uses: appleboy/ssh-action@master
         with:
           host: ec2-3-18-102-88.us-east-2.compute.amazonaws.com
           username: ec2-user
           key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
           script: |
-            cd /home/ec2-user/RefaDiaz/RefaDiazBackend/
+            cd /RefaDiaz/RefaDiazBackend
             npm install
             pm2 restart API
