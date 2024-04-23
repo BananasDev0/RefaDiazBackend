@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Copy files and execute remote commands
+      - name: Copy files to QA EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.QA_HOST }}
@@ -24,4 +24,13 @@ jobs:
             set -x  # Habilita la traza de comandos
             ssh-keyscan -H ${{ secrets.QA_HOST }} >> ~/.ssh/known_hosts
             scp -r . ${{ secrets.QA_USER }}@${{ secrets.QA_HOST }}:/RefaDiaz/RefaDiazBackend
+
+      - name: Install dependencies and restart API
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.QA_HOST }}
+          username: ${{ secrets.QA_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -x  # Habilita la traza de comandos
             ssh ${{ secrets.QA_USER }}@${{ secrets.QA_HOST }} "cd /RefaDiaz/RefaDiazBackend && npm install && pm2 restart API"
