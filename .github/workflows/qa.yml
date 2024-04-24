@@ -3,7 +3,7 @@ name: Despliegue en EC2
 on:
   push:
     branches:
-      - qa # Cambia 'main' por la rama que desees
+      - qa
 
 jobs:
   deploy:
@@ -14,18 +14,7 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v2
 
-      - name: Copiar archivos al servidor
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ec2-3-18-102-88.us-east-2.compute.amazonaws.com
-          username: ec2-user
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.PORT }}
-          source: "."
-          target: "/RefaDiaz/RefaDiazBackend"
-          debug: true
-
-      - name: Ejecutar comandos remotos
+      - name: Transferir archivos y ejecutar comandos remotos
         uses: appleboy/ssh-action@master
         with:
           host: ec2-3-18-102-88.us-east-2.compute.amazonaws.com
@@ -33,6 +22,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: |
+            set -x  # Habilita la traza de comandos
+            scp -r ./* ec2-user@ec2-3-18-102-88.us-east-2.compute.amazonaws.com:/RefaDiaz/RefaDiazBackend
             cd /RefaDiaz/RefaDiazBackend
             npm install
             pm2 restart API
