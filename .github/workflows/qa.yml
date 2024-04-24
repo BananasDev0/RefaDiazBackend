@@ -23,6 +23,7 @@ jobs:
           port: ${{ secrets.PORT }}
           source: "."
           target: "/RefaDiaz/RefaDiazBackend"
+          debug: true
 
       - name: Ejecutar comandos remotos
         uses: appleboy/ssh-action@master
