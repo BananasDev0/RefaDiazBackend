@@ -24,6 +24,6 @@ jobs:
           script: |
             set -x  # Habilita la traza de comandos
             scp -r ./* ec2-user@ec2-3-18-102-88.us-east-2.compute.amazonaws.com:/RefaDiaz/RefaDiazBackend
-            cd /RefaDiaz/RefaDiazBackend
+            cd /home/ec2-user/RefaDiaz/RefaDiazBackend
             npm install
             pm2 restart API
