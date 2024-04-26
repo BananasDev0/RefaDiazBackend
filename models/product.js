@@ -18,10 +18,6 @@ Product.init(
             type: DataTypes.STRING,
             field: 'comments'
         },
-        imageUrl: {
-            type: DataTypes.STRING,
-            field: 'image_url'
-        },
         active: {
             type: DataTypes.INTEGER,
             defaultValue: 1

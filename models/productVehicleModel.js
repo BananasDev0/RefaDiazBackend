@@ -13,13 +13,14 @@ ProductVehicleModel.init(
         
         productId: {
             type: DataTypes.INTEGER,
-            field :  'product_id'
+            field :  'product_id',
+            primaryKey: true,
             
         },
         vehicleModelId: {
             type: DataTypes.INTEGER,
-            field: 'vehicle_model_id'
-            
+            field: 'vehicle_model_id',
+            primaryKey: true,
         },
         initialYear: {
             type: DataTypes.INTEGER,

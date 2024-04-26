@@ -1,5 +1,7 @@
 import sequelize from "../config/dbConnection.js";
+import Brand from "../models/brand.js";
 import ProductVehicleModel from "../models/productVehicleModel.js";
+import VehicleModel from "../models/vehicleModel.js";
 
 const getAll = async (req,res) => {
     try{
@@ -29,6 +31,33 @@ const getProductVehicleModel = async(req,res) => {
         res.status(200).send(productVehicleModel);
 
     }catch(error){
+        res.status(500).send(error.message);
+    }
+}
+
+const getProductVehicleModels = async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const productVehicleModels = await ProductVehicleModel.findAll({
+            where: {
+                productId: productId
+            },
+            include: [
+                {
+                    model: VehicleModel,
+                    as: 'vehicleModel',
+                    include: [
+                        {
+                            model: Brand,
+                            as: 'brand'
+                        }
+                    ]
+                }
+            ]
+        });
+        res.status(200).send(productVehicleModels);
+    } catch (error) {
+        console.error('Error retrieving product vehicle models:', error);
         res.status(500).send(error.message);
     }
 }
@@ -129,4 +158,6 @@ const createProductVehicleModelList = async (req, res) => {
 
 
 
-export {getAll,getProductVehicleModel,createProductVehicleModel,deleteProductVehicleModel,updateProductVehicleModel,createProductVehicleModelList} 
+export {getAll,getProductVehicleModel,
+    createProductVehicleModel,deleteProductVehicleModel,
+    updateProductVehicleModel,createProductVehicleModelList, getProductVehicleModels} 

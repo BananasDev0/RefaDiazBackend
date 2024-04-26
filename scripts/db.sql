@@ -26,9 +26,24 @@ CREATE TABLE brand(
 CREATE TABLE product(
     id SERIAL PRIMARY KEY,
     name VARCHAR(300),
-    image_url VARCHAR(5000),
     comments VARCHAR(5000),
     stock_count INT
+) INHERITS (control_fields);
+
+CREATE TABLE file (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    mime_type VARCHAR(50) NOT NULL,
+    storage_path TEXT NOT NULL
+) INHERITS (control_fields);
+
+CREATE TABLE product_file (
+    product_id INT NOT NULL,
+    file_id INT NOT NULL,
+    order_id INT NOT NULL,
+    PRIMARY KEY (product_id, file_id),
+    FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE,
+    FOREIGN KEY (file_id) REFERENCES file (id) ON DELETE CASCADE
 ) INHERITS (control_fields);
 
 CREATE TABLE radiator(
@@ -45,7 +60,7 @@ CREATE TABLE price_type(
 CREATE TABLE price(
     id SERIAL PRIMARY KEY,
     cost MONEY,
-    description VARCHAR(400),
+    description VARCHAR(400)
 ) INHERITS (control_fields);
 
 CREATE TABLE product_price(
@@ -94,7 +109,7 @@ CREATE TABLE "user"(
     id varchar(500) PRIMARY KEY,
     person_id INT,
     role_id INT,
-    FOREIGN KEY (person_id) REFERENCES person(id)
+    FOREIGN KEY (person_id) REFERENCES person(id),
     FOREIGN KEY (role_id) REFERENCES role(id)
 ) INHERITS (control_fields);
 
