@@ -1,39 +1,43 @@
-import { Sequelize, DataTypes } from "sequelize";
-import sequelize from '../config/dbConnection.js';
+import { Model, DataTypes } from 'sequelize';
 import BrandType from "./brandType.js";
+import sequelize from '../config/dbConnection.js';
+export class Brand extends Model {}
 
-class Brand extends Sequelize.Model { };
-
-Brand.init(
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
-        },
-        name: {
-            type: DataTypes.STRING,
-            field: 'name'
-        },
-        imageUrl: {
-            type: DataTypes.STRING,
-            field: 'image_url'
-        },
-        active: {
-            type: DataTypes.INTEGER
-        },
+Brand.init({
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    {
-        sequelize: sequelize, // Aquí pasas tu instancia de Sequelize configurada
-        modelName: 'brand', // El nombre del modelo en singular
-        tableName: 'brand', // El nombre de la tabla en la base de datos
-        timestamps: true, //es para agregar created_at, update_at, checar con el equipo,
-        updatedAt: 'updated_at',
-        createdAt: 'created_at'
+    name: {
+        type: DataTypes.STRING(300),
+        allowNull: false
+    },
+    brandTypeId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: 'brand_type_id',
+        references: {
+            model: 'brand_type', // Nombre de la tabla referenciada
+            key: 'id' // Clave en la tabla referenciada
+        }
+    },
+    active: {
+        type: DataTypes.BOOLEAN
     }
-);
+}, {
+    sequelize,
+    modelName: 'Brand',
+    tableName: 'brand',
+    timestamps: false,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
+});
 
-Brand.belongsTo(BrandType, { as: 'brand_type', foreignKey: 'brand_type_id' });
-BrandType.hasMany(Brand, { as: 'brand', foreignKey: 'brand_type_id' });
+
+Brand.belongsTo(BrandType, {
+    as: 'brandType', // Alias para la relación
+    foreignKey: 'brand_type_id' // Especifica el nombre de la clave foránea
+});
 
 export default Brand;

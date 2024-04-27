@@ -6,9 +6,9 @@ import sequelize from '../config/dbConnection.js';
 import Product from './product.js';
 import VehicleModel from './vehicleModel.js';
 
-class ProductVehicleModel extends Sequelize.Model{};
+class ProductCarModel extends Sequelize.Model{};
 
-ProductVehicleModel.init(
+ProductCarModel.init(
     {
         
         productId: {
@@ -38,8 +38,8 @@ ProductVehicleModel.init(
     {
         
         sequelize: sequelize, // Aquí pasas tu instancia de Sequelize configurada
-        modelName: 'productVehicleModel', // El nombre del modelo en singular
-        tableName: 'product_vehicle_model', // El nombre de la tabla en la base de datos
+        modelName: 'ProductCarModel', // El nombre del modelo en singular
+        tableName: 'product_car_model', // El nombre de la tabla en la base de datos
         timestamps: false,
         createdAt: 'created_at',
         updatedAt: 'updated_at'
@@ -47,16 +47,16 @@ ProductVehicleModel.init(
     }
 );
 
-ProductVehicleModel.removeAttribute('id');
+ProductCarModel.removeAttribute('id');
 
-ProductVehicleModel.belongsTo(VehicleModel, { as: 'vehicleModel', foreignKey: 'vehicleModelId' });
-VehicleModel.hasMany(ProductVehicleModel, { as: 'productVehicleModel', foreignKey: 'vehicleModelId' });
-
-
-ProductVehicleModel.belongsTo(Product, { as: 'product', foreignKey: 'productId' });
-Product.hasMany(ProductVehicleModel, { as: 'productVehicleModel', foreignKey: 'productId' });
+ProductCarModel.belongsTo(VehicleModel, { as: 'vehicleModel', foreignKey: 'vehicleModelId' });
+VehicleModel.hasMany(ProductCarModel, { as: 'productCarModel', foreignKey: 'vehicleModelId' });
 
 
+ProductCarModel.belongsTo(Product, { as: 'product', foreignKey: 'productId' });
+Product.hasMany(ProductCarModel, { as: 'productCarModel', foreignKey: 'productId' });
 
 
-export default ProductVehicleModel;
+
+
+export default ProductCarModel;

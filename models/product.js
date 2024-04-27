@@ -18,9 +18,12 @@ Product.init(
             type: DataTypes.STRING,
             field: 'comments'
         },
+        dpi:{
+            type: DataTypes.STRING,
+            field: 'dpi'
+        },
         active: {
             type: DataTypes.INTEGER,
-            defaultValue: 1
         },
     },
     {

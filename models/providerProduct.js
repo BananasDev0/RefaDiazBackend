@@ -10,11 +10,6 @@ class ProviderProduct extends Sequelize.Model{};
 
 ProviderProduct.init(
     {
-        id:{
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
-        },
         productId: {
             type: DataTypes.INTEGER,
             field : 'product_id'
@@ -47,6 +42,8 @@ ProviderProduct.init(
         updatedAt: 'updated_at'
     }
 );
+
+ProviderProduct.removeAttribute('id');
 
 // Relación entre ProviderProduct y Price
 ProviderProduct.belongsTo(Price, { as: 'price', foreignKey: 'provider_product_id' });
