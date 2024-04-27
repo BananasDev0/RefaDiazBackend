@@ -56,8 +56,7 @@ File.init({
 });
 
 File.belongsTo(FileType, {
-    as: 'fileType',
-    foreignKey: 'file_type_id'
+    as: 'fileType'
 });
 
 export default File;

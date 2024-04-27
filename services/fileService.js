@@ -38,4 +38,15 @@ export class FileService {
         await file.update(updatedData);
         return file;
     }
+
+    static async createProductFiles(files, productId) {
+        let createdFiles = [];
+
+        for (let file of files) {
+            let createdFile = await FileService.createFile({ ...file, objectId: productId });
+            createdFiles.push(createdFile);
+        }
+
+        return createdFiles;
+    }
 }

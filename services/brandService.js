@@ -9,10 +9,7 @@ export class BrandService {
     static async createBrand(brandData) {
         let brand = await Brand.create(brandData);
         const file = await FileService.createFile({ ...brandData.file, fileTypeId: FileConstants.BrandImage, objectId: brand.id });
-
-        brand = JSON.parse(JSON.stringify(brand));
-        brand.file = file;
-
+        brand.setDataValue('file', file);
         return brand;
     }
 
@@ -29,8 +26,6 @@ export class BrandService {
         });
 
         let files = await FileService.getFiles(brands.map(brand => brand.id), FileConstants.BrandImage)
-        brands = JSON.parse(JSON.stringify(brands));
-
         brands.map(brand => (this.attachFileToBrand(brand, files)));
         return brands;
     }
@@ -52,7 +47,6 @@ export class BrandService {
         }
 
         const files = await FileService.getFiles([id], FileConstants.BrandImage);
-        brand = JSON.parse(JSON.stringify(brand));
         return this.attachFileToBrand(brand, files);
     }
 
@@ -87,7 +81,7 @@ export class BrandService {
 
     static attachFileToBrand(brand, files) {
         const brandFile = files.find(file => file.objectId === brand.id);
-        brand.file = brandFile;
+        brand.setDataValue('file', brandFile)
         return brand;
     }
 }
