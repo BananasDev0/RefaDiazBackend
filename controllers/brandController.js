@@ -1,8 +1,6 @@
-import sequelize from "../config/dbConnection.js";
 import Brand from "../models/brand.js";
-import BrandType from "../models/brandType.js";
 import CarModel from "../models/carModel.js"; // Cambio aquí de VehicleModel a CarModel
-import { FileConstants, attachFileToBrand, getFile, getFiles } from "../utils/fileUtils.js";
+import { BrandService } from "../services/brandService.js";
 
 const getAll = async (req, res) => {
     try {
@@ -11,18 +9,7 @@ const getAll = async (req, res) => {
             orderDirection = 'DESC';
         }
 
-        let brands = await Brand.findAll({
-            include: [{
-                model: BrandType,
-                as: 'brandType'
-            }],
-            order: [['name', orderDirection]]
-        });
-
-        const files = await getFiles(brands.map(brand => brand.id), FileConstants.BrandImage)
-
-        brands = JSON.parse(JSON.stringify(brands));
-        brands.map(brand => (attachFileToBrand(brand, files)));
+        let brands = await BrandService.getAllBrands(orderDirection);
 
         res.status(200).send(brands);
     } catch (error) {
@@ -34,15 +21,7 @@ const getAll = async (req, res) => {
 const getBrand = async (req, res) => {
     try {
         const brandId = req.params.id;
-        const brand = await Brand.findOne({
-            where: {
-                id: brandId
-            },
-            include: [{
-                model: BrandType,
-                as: 'brandType'
-            }]
-        });
+        const brand = await BrandService.getBrandById(brandId);
 
         if (!brand) {
             res.status(404).send('Resource not found.');
@@ -50,15 +29,16 @@ const getBrand = async (req, res) => {
             res.status(200).send(brand);
         }
     } catch (error) {
-        res.status(500).send(error.message)
+        console.error('Error al recuperar la marca:', error);
+        res.status(500).send(error.message);
     }
 }
 
 const createNewBrand = async (req, res) => {
     try {
         const brandData = req.body;
-        const brand = await Brand.create(brandData);
-        res.status(200).send(brand.toJSON());
+        const brand = await BrandService.createBrand(brandData);
+        res.status(200).send(brand);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -68,25 +48,12 @@ const updateBrand = async (req, res) => {
     try {
         const brandId = req.params.id;
         const updatedData = req.body;
-
-        const brand = await Brand.findByPk(brandId);
+        const brand = await BrandService.updateBrand(brandId, updatedData);
 
         if (!brand) {
-            res.status(404).send("Resource not found.");
+            res.status(404).send('Resource not found.');
         } else {
-            const updatedBrandType = updatedData.brandType;
-            delete updatedData.brandType;
-
-            await sequelize.transaction(async (t) => {
-                await brand.update(updatedData, { transaction: t });
-
-                if (updatedBrandType) {
-                    await brand.brandType.update(updatedBrandType, { transaction: t });
-                }
-            });
-
-            const updatedBrand = await Brand.findByPk(brandId, { include: [{ model: BrandType, as: 'brandType' }] });
-            res.status(204).send(updatedBrand);
+            res.status(200).send(brand);
         }
     } catch (error) {
         console.error('Error al actualizar la marca:', error);
@@ -97,17 +64,16 @@ const updateBrand = async (req, res) => {
 const deleteBrand = async (req, res) => {
     try {
         const brandId = req.params.id;
-        const brand = await Brand.findByPk(brandId);
+        const brand = await BrandService.deleteBrand(brandId);
 
         if (!brand) {
             res.status(404).send('Resource not found.');
         } else {
-            await brand.destroy();
-            res.status(204).send();
+            res.status(204).send(brand);
         }
     } catch (error) {
-        console.error('Error al borrar brand: ', error);
-        res.status(500).send(error);
+        console.error('Error al eliminar la marca:', error);
+        res.status(500).send(error.message);
     }
 }
 

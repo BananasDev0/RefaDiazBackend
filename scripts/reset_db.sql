@@ -4,7 +4,6 @@
 DROP TABLE IF EXISTS client_vehicle CASCADE;
 DROP TABLE IF EXISTS provider_product CASCADE;
 DROP TABLE IF EXISTS product_price CASCADE;
-DROP TABLE IF EXISTS product_file CASCADE;
 DROP TABLE IF EXISTS product_car_model CASCADE;
 
 -- Continuar con las tablas que podrían ser referenciadas por las tablas eliminadas anteriormente
