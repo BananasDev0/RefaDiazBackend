@@ -4,7 +4,7 @@ import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
 
 import Product from './product.js';
-import VehicleModel from './vehicleModel.js';
+import CarModel from './carModel.js';
 
 class ProductCarModel extends Sequelize.Model{};
 
@@ -17,9 +17,9 @@ ProductCarModel.init(
             primaryKey: true,
             
         },
-        vehicleModelId: {
+        carModelId: {
             type: DataTypes.INTEGER,
-            field: 'vehicle_model_id',
+            field: 'car_model_id',
             primaryKey: true,
         },
         initialYear: {
@@ -49,8 +49,8 @@ ProductCarModel.init(
 
 ProductCarModel.removeAttribute('id');
 
-ProductCarModel.belongsTo(VehicleModel, { as: 'vehicleModel', foreignKey: 'vehicleModelId' });
-VehicleModel.hasMany(ProductCarModel, { as: 'productCarModel', foreignKey: 'vehicleModelId' });
+ProductCarModel.belongsTo(CarModel, { as: 'carModel', foreignKey: 'carModelId' });
+CarModel.hasMany(ProductCarModel, { as: 'productCarModel', foreignKey: 'carModelId' });
 
 
 ProductCarModel.belongsTo(Product, { as: 'product', foreignKey: 'productId' });

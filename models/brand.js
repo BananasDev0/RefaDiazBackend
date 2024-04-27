@@ -37,7 +37,6 @@ Brand.init({
 
 Brand.belongsTo(BrandType, {
     as: 'brandType', // Alias para la relación
-    foreignKey: 'brand_type_id' // Especifica el nombre de la clave foránea
 });
 
 export default Brand;

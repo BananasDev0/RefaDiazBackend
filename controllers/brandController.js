@@ -1,7 +1,8 @@
 import sequelize from "../config/dbConnection.js";
 import Brand from "../models/brand.js";
 import BrandType from "../models/brandType.js";
-import VehicleModel from "../models/vehicleModel.js";
+import CarModel from "../models/carModel.js"; // Cambio aquí de VehicleModel a CarModel
+import { FileConstants, attachFileToBrand, getFile, getFiles } from "../utils/fileUtils.js";
 
 const getAll = async (req, res) => {
     try {
@@ -10,13 +11,18 @@ const getAll = async (req, res) => {
             orderDirection = 'DESC';
         }
 
-        const brands = await Brand.findAll({
+        let brands = await Brand.findAll({
             include: [{
                 model: BrandType,
-                as: 'brand_type'
+                as: 'brandType'
             }],
             order: [['name', orderDirection]]
         });
+
+        const files = await getFiles(brands.map(brand => brand.id), FileConstants.BrandImage)
+
+        brands = JSON.parse(JSON.stringify(brands));
+        brands.map(brand => (attachFileToBrand(brand, files)));
 
         res.status(200).send(brands);
     } catch (error) {
@@ -24,7 +30,6 @@ const getAll = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
-
 
 const getBrand = async (req, res) => {
     try {
@@ -35,17 +40,15 @@ const getBrand = async (req, res) => {
             },
             include: [{
                 model: BrandType,
-                as: 'brand_type'
+                as: 'brandType'
             }]
         });
 
         if (!brand) {
             res.status(404).send('Resource not found.');
-            console.log("Resource not found.");
         } else {
             res.status(200).send(brand);
         }
-
     } catch (error) {
         res.status(500).send(error.message)
     }
@@ -78,16 +81,13 @@ const updateBrand = async (req, res) => {
                 await brand.update(updatedData, { transaction: t });
 
                 if (updatedBrandType) {
-                    await brand.brandType.update(updatedBrandType, { transaction: t })
+                    await brand.brandType.update(updatedBrandType, { transaction: t });
                 }
-
             });
 
-            const updatedBrand = await Brand.findByPk(brandId, { include: [{ model: BrandType, as: 'brand_type' }] });
+            const updatedBrand = await Brand.findByPk(brandId, { include: [{ model: BrandType, as: 'brandType' }] });
             res.status(204).send(updatedBrand);
         }
-
-
     } catch (error) {
         console.error('Error al actualizar la marca:', error);
         res.status(500).send(error.message);
@@ -97,7 +97,7 @@ const updateBrand = async (req, res) => {
 const deleteBrand = async (req, res) => {
     try {
         const brandId = req.params.id;
-        const brand = await Brand.findByPk(brandId)
+        const brand = await Brand.findByPk(brandId);
 
         if (!brand) {
             res.status(404).send('Resource not found.');
@@ -105,34 +105,32 @@ const deleteBrand = async (req, res) => {
             await brand.destroy();
             res.status(204).send();
         }
-
     } catch (error) {
-        console.log('Error al borrar brand: ', error);
+        console.error('Error al borrar brand: ', error);
         res.status(500).send(error);
     }
 }
 
-const getBrandVehicleModels = async (req, res) => { 
+const getBrandCarModels = async (req, res) => {  // Cambiado a getBrandCarModels
     try {
         const brandId = req.params.id;
         const brand = await Brand.findByPk(brandId, {
             include: [{
-                model: VehicleModel,
-                as: 'vehicleModel'
+                model: CarModel, // Cambio aquí de VehicleModel a CarModel
+                as: 'carModel' // Podrías querer cambiar el alias a 'carModel'
             }]
         });
 
         if (!brand) {
             res.status(404).send('Resource not found.');
         } else {
-            res.status(200).send(brand['vehicleModel']);
+            res.status(200).send(brand['carModel']); // Considera actualizar 'vehicleModel' a 'carModel'
         }
 
     } catch (error) {
-        console.error('Error al recuperar los modelos de vehículos de la marca:', error);
+        console.error('Error al recuperar los modelos de carros de la marca:', error);
         res.status(500).send(error.message);
     }
-
 }
 
-export { createNewBrand, getAll, deleteBrand, getBrand, updateBrand, getBrandVehicleModels };
+export { createNewBrand, getAll, deleteBrand, getBrand, updateBrand, getBrandCarModels }; // Cambiado a getBrandCarModels
