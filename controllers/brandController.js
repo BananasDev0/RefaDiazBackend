@@ -77,20 +77,20 @@ const deleteBrand = async (req, res) => {
     }
 }
 
-const getBrandCarModels = async (req, res) => {  // Cambiado a getBrandCarModels
+const getBrandCarModels = async (req, res) => {
     try {
         const brandId = req.params.id;
         const brand = await Brand.findByPk(brandId, {
             include: [{
-                model: CarModel, // Cambio aquí de VehicleModel a CarModel
-                as: 'carModel' // Podrías querer cambiar el alias a 'carModel'
+                model: CarModel,
+                as: 'carModels'
             }]
         });
 
         if (!brand) {
             res.status(404).send('Resource not found.');
         } else {
-            res.status(200).send(brand['carModel']); // Considera actualizar 'vehicleModel' a 'carModel'
+            res.status(200).send(brand['carModels']);
         }
 
     } catch (error) {

@@ -39,6 +39,6 @@ CarModel.init(
 );
 
 CarModel.belongsTo(Brand, { foreignKey: 'id', as: 'brand' });
-Brand.hasMany(CarModel, { foreignKey: 'brand_id', as: 'carModel' });
+Brand.hasMany(CarModel, { foreignKey: 'brandId', as: 'carModels' });
 
 export default CarModel;

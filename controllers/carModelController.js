@@ -2,11 +2,7 @@ import CarModel from "../models/carModel.js";
 import Vehicle from "../models/vehicle.js";
 import Brand from "../models/brand.js";
 import sequelize from '../config/dbConnection.js';
-import Product from "../models/product.js";
-import Radiator from "../models/radiator.js";
-import ProductFile from "../models/productFile.js";
-import File from "../models/file.js";
-import ProductCarModel from "../models/productCarModel.js";
+import { ProductCarModelService } from "../services/productCarModelService.js";
 
 const createCarModel = async (req, res) => {
     try {
@@ -59,7 +55,7 @@ const getAll = async (req, res) => {
         res.status(200).send(cars);
     } catch (error) {
         console.error('Error retrieving cars:', error);
-        res.status(500). send(error.message);
+        res.status(500).send(error.message);
     }
 };
 
@@ -128,41 +124,39 @@ const deleteCarModel = async (req, res) => {
     }
 };
 
-const getCarModelRadiators = async (req, res) => {
+const getCarModelProducts = async (req, res) => {
     try {
         const carModelId = req.params.id;
-        const productCarModels = await ProductCarModel.findAll({
-            where: { carModelId: carModelId },  // Asumiendo que la clave foránea en ProductVehicleModel se ha actualizado a carModelId
-            include: [{
-                model: Product,
-                as: 'product',
-                include: [{
-                    model: Radiator,
-                    as: 'radiator'  // Asumiendo que Radiator está directamente relacionado con Product
-                },
-                {
-                    model: ProductFile,
-                    as: 'productFiles',
-                    include: [{
-                        model: File,
-                        as: 'file'
-                    }]
-                }]
-            }]
-        });
+        const productTypeId = req.query.productTypeId;
+        const searchTerm = req.query.searchTerm;
+        const page = parseInt(req.query.page) || 1;  // Establece un valor por defecto de 1 si no se proporciona
+        const limit = parseInt(req.query.limit) || 10;  // Establece un valor por defecto de 10 si no se proporciona
 
-        const filteredProductCarModels = productCarModels.filter(item => item.product && item.product.radiator !== null);
+        const productCarModels = await ProductCarModelService.getProductsByCarModel(carModelId, productTypeId, searchTerm, page, limit);
 
-        if (filteredProductCarModels.length === 0) {
-            res.status(404).send('Resource not found.');
-        } else {
-            res.status(200).send(filteredProductCarModels);
-        }
+        res.status(200).send(productCarModels);
     } catch (error) {
-        console.error('Error retrieving car models radiators:', error);
+        console.error('Error retrieving car model products:', error);
+        res.status(500).send(error.message);
+    }
+}
+
+const getAllCarModelsProducts = async (req, res) => {
+    try {
+        const productTypeId = req.query.productTypeId;
+        const searchTerm = req.query.searchTerm;
+        const page = parseInt(req.query.page) || 1;  // Establece un valor por defecto de 1 si no se proporciona
+        const limit = parseInt(req.query.limit) || 10;  // Establece un valor por defecto de 10 si no se proporciona
+
+        const productCarModels = await ProductCarModelService.getAllProductCarModels(page, limit, productTypeId, searchTerm);
+
+        res.status(200).send(productCarModels);
+    } catch (error) {
+        console.error('Error retrieving car model products:', error);
         res.status(500).send(error.message);
     }
 }
 
 
-export { createCarModel, getAll, getCarModel, updateCarModel, deleteCarModel, getCarModelRadiators };
+
+export { createCarModel, getAll, getCarModel, updateCarModel, deleteCarModel, getCarModelProducts, getAllCarModelsProducts };

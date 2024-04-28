@@ -6,7 +6,8 @@ import {
     getCarModel,
     updateCarModel,
     deleteCarModel,
-    getCarModelRadiators
+    getCarModelProducts,
+    getAllCarModelsProducts
 } from '../controllers/carModelController.js';  // Cambia el nombre del archivo importado si has renombrado el controlador
 
 const carModelRouter = express.Router();
@@ -14,7 +15,8 @@ const carModelRouter = express.Router();
 // Actualiza los endpoints para que reflejen el contexto de 'CarModel'
 carModelRouter.get('/models', getAll);
 carModelRouter.get('/model/:id', getCarModel);
-carModelRouter.get('/model/:id/radiators', getCarModelRadiators);
+carModelRouter.get('/model/:id/products', getCarModelProducts);
+carModelRouter.get('/models/products', getAllCarModelsProducts);
 
 carModelRouter.post('/model', createCarModel);
 

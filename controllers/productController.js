@@ -1,7 +1,4 @@
 import Product from '../models/product.js';
-import ProductFile from '../models/productFile.js';
-import sequelize from "../config/dbConnection.js";
-import File from '../models/file.js';
 import { ProductService } from '../services/productService.js';
 
 const getAll = async (req, res) => {
@@ -80,30 +77,6 @@ const deleteProduct = async (req, res) => {
     }
 }
 
-const createProductFiles = async (req, res) => {
-    const transaction = await sequelize.transaction();
 
-    try {
-        const filesData = req.body;
-        const productId = req.params.id;
 
-        const createdFiles = await File.bulkCreate(filesData, { transaction });
-
-        const productFilesData = createdFiles.map((file, index) => ({
-            productId: productId,
-            fileId: file.id,
-            orderId: index + 1
-        }));
-
-        const productFiles = await ProductFile.bulkCreate(productFilesData, { transaction });
-
-        await transaction.commit();
-        res.status(200).send(productFiles);
-    } catch (error) {
-        await transaction.rollback();
-        console.error('Error creating product files:', error);
-        res.status(500).send(error.message);
-    }
-};
-
-export { getAll, getProduct, createProduct, updateProduct, deleteProduct, createProductFiles }
+export { getAll, getProduct, createProduct, updateProduct, deleteProduct }
