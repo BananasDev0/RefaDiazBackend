@@ -9,19 +9,8 @@ const createCarModel = async (req, res) => {
         const carData = req.body;
         const car = await sequelize.transaction(async (t) => {
             const newCar = await CarModel.create(carData, {
-                include: [
-                    {
-                        model: Vehicle,
-                        as: 'vehicle'
-                    },
-                    {
-                        model: Brand,
-                        as: 'brand'
-                    }
-                ],
                 transaction: t
             });
-            console.log(newCar.toJSON())
             return newCar;
         });
 
