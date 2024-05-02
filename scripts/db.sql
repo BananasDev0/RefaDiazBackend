@@ -93,6 +93,7 @@ CREATE TABLE product_price(
 ) INHERITS (control_fields);
 
 CREATE TABLE provider_product(
+    id SERIAL PRIMARY KEY,
     product_id INT NOT NULL,
     price_id INT NOT NULL,
     provider_id INT NOT NULL,
