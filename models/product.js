@@ -26,6 +26,10 @@ Product.init(
             type: DataTypes.INTEGER,
             field: 'product_type_id'
         },
+        stockCount: {
+            type: DataTypes.INTEGER,
+            field: 'stock_count'
+        },
         active: {
             type: DataTypes.INTEGER,
         },
