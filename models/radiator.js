@@ -41,7 +41,7 @@ Radiator.init(
 );
 
 Radiator.belongsTo(Product, { as: 'product', foreignKey: 'product_id' });
-Product.hasMany(Radiator, { as: 'radiator', foreignKey: 'product_id' });
+Product.hasOne(Radiator, { as: 'radiator', foreignKey: 'product_id' });
 
 
 export default Radiator;
