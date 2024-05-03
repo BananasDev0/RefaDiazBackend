@@ -45,13 +45,12 @@ const updateProduct = async (req, res) => {
     try {
         const productId = req.params.id;
         const updatedData = req.body;
-        const product = await Product.findByPk(productId);
 
-        if (!product) {
-            res.status(404).send("Resource not found.")
+        let updatedProduct = await ProductService.updateProduct(productId, updatedData);
+        if (updateProduct) {
+            res.status(200).send(updatedProduct);
         } else {
-            await product.update(updatedData);
-            res.status(204).send(product);
+            res.status(404).send(updateProduct);
         }
 
     } catch (error) {

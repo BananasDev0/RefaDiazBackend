@@ -24,4 +24,44 @@ export class ProviderProductService {
             ]
         });
     }
+
+    static async updateProviderProducts(productId, updatedData, transaction) {
+        try {
+            // Buscar todos los productos del proveedor asociados a este producto
+            let productProviders = await ProviderProduct.findAll({
+                where: {
+                    productId
+                },
+                include: [
+                    {
+                        model: Price,
+                        as: 'price'
+                    }
+                ],
+                transaction
+            });
+            console.log(productProviders)
+
+            // Iterar sobre cada producto del proveedor y actualizar los datos
+            for (let productProvider of productProviders) {
+                // Actualizar los campos del producto del proveedor
+                const provider = updatedData.find(ppUpdated=> ppUpdated.providerId === productProvider.providerId);
+                console.log("hola soy el proveedor ", provider)
+                await productProvider.update(provider,{
+                    include: [
+                        {
+                            model:Price,
+                            as: 'price'
+                        }
+                    ],
+                    transaction 
+                });
+            }
+    
+            return productProviders; 
+        } catch (error) {
+            console.error('Error updating provider products:', error);
+            throw error;
+        }
+    }
 }

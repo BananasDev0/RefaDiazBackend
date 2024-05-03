@@ -1,5 +1,6 @@
 import sequelize from "../config/dbConnection.js";
 import Product from "../models/product.js";
+import ProviderProduct from "../models/providerProduct.js";
 import { FileConstants } from "../utils/fileConstants.js";
 import { FileService } from "./fileService.js";
 import { ProductCarModelService } from "./productCarModelService.js";
@@ -114,4 +115,31 @@ export class ProductService {
         }
     }
 
+    static async updateProduct(productId, updatedData) {
+        const transaction = await sequelize.transaction();
+        try {
+            let product = await Product.findByPk(productId);
+            
+            if (!product) {
+                await transaction.rollback();
+                return null;
+            }
+    
+            // Update the basic fields of the product
+            await product.update(updatedData, { transaction });
+    
+            // Update relationships with providers using the provided service
+            if (updatedData.providers && updatedData.providers.length > 0) {
+                await ProviderProductService.updateProviderProducts(productId, updatedData.providers, transaction);
+                // ^ Aquí esperamos a que se complete la función dentro de la transacción
+            }
+    
+            await transaction.commit();
+            return product;
+        } catch (error) {
+            await transaction.rollback();
+            console.error('Error updating product:', error);
+            throw error;
+        }
+    }    
 }

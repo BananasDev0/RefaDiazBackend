@@ -138,6 +138,4 @@ export class ProductCarModelService {
             totalPages: Math.ceil(productCarModels.count / limit)
         };
     }
-
-
 }
