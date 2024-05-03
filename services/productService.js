@@ -133,9 +133,15 @@ export class ProductService {
                 await ProviderProductService.updateProviderProducts(productId, updatedData.providers, transaction);
                 // ^ Aquí esperamos a que se complete la función dentro de la transacción
             }
+
+            if(updatedData.prices && updatedData.prices.length > 0) {
+                await ProductPriceService.updateProductPrice(productId, updatedData.prices, transaction);
+            }
+
     
             await transaction.commit();
-            return product;
+            return 200;
+
         } catch (error) {
             await transaction.rollback();
             console.error('Error updating product:', error);

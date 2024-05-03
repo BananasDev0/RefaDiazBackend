@@ -47,16 +47,17 @@ const updateProduct = async (req, res) => {
         const updatedData = req.body;
 
         let updatedProduct = await ProductService.updateProduct(productId, updatedData);
-        if (updateProduct) {
+        if (updatedProduct.statusCode === 200) {
             res.status(200).send(updatedProduct);
         } else {
-            res.status(404).send(updateProduct);
+            res.status(404).send(updatedProduct);
         }
 
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
+
 
 const deleteProduct = async (req, res) => {
     try {
