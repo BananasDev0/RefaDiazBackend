@@ -138,6 +138,10 @@ export class ProductService {
                 await ProductPriceService.updateProductPrice(productId, updatedData.prices, transaction);
             }
 
+            if(updatedData.carModels && updatedData.carModels.length > 0) {
+                await ProductCarModelService.updateProductCarModel(productId, updatedData.carModels, transaction);
+            }
+
     
             await transaction.commit();
             return 200;

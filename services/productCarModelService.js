@@ -138,4 +138,32 @@ export class ProductCarModelService {
             totalPages: Math.ceil(productCarModels.count / limit)
         };
     }
+
+    static async updateProductCarModel(productId, updatedData, transaction) {
+        try {
+            // Buscar todos los productos del proveedor asociados a este producto
+            let productCarModels = await ProductCarModel.findAll({
+                where: { productId },
+                include: [{ model: CarModel, as: 'carModel' }],
+                transaction
+            });
+    
+            for (let productCarModel of productCarModels) {
+                // Actualizar los campos del producto del proveedor
+                const carModelUpdateData = updatedData.find(pcUpdated => pcUpdated.providerId === productCarModel.providerId);
+                if (carModelUpdateData) {
+                    await productCarModel.update(carModelUpdateData, { transaction });
+    
+                    if (productCarModel.carModel) {
+                        await productCarModel.carModel.update(carModelUpdateData.carModel, { transaction });
+                    }
+                }
+            }
+    
+            return productCarModels;
+        } catch (error) {
+            console.error('Error updating provider products:', error);
+            throw error;
+        }
+    }
 }
