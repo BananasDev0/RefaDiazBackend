@@ -38,7 +38,7 @@ export class FileService {
         await file.update(updatedData);
         return file;
     }
-
+    
     static async createProductFiles(files, productId) {
         let createdFiles = [];
 

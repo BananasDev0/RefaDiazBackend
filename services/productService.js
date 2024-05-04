@@ -1,9 +1,9 @@
 import sequelize from "../config/dbConnection.js";
 import Product from "../models/product.js";
-import ProviderProduct from "../models/providerProduct.js";
 import { FileConstants } from "../utils/fileConstants.js";
 import { FileService } from "./fileService.js";
 import { ProductCarModelService } from "./productCarModelService.js";
+import { ProductFileService } from "./productFileService.js";
 import { ProductPriceService } from "./productPriceService.js";
 import { ProviderProductService } from "./providerProductService.js";
 
@@ -142,6 +142,9 @@ export class ProductService {
                 await ProductCarModelService.updateProductCarModel(productId, updatedData.carModels, transaction);
             }
 
+            if (updatedData.files && updatedData.files.length > 0) {
+                await ProductFileService.updateProductFiles([productId],updatedData.files, transaction);
+            }
     
             await transaction.commit();
             return 200;
