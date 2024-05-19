@@ -113,4 +113,4 @@ INSERT INTO file (name, mime_type, storage_path, object_id, file_type_id) VALUES
 
 INSERT INTO role(description) VALUES
 ('ADMINISTRADOR'),
-('ASISTENTE');
+('EMPLEADO');
