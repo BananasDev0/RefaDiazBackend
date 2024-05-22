@@ -1,19 +1,22 @@
-import { Sequelize,DataTypes } from "sequelize";
+import { Sequelize, DataTypes } from "sequelize";
 import sequelize from "../config/dbConnection.js";
 
-class Role extends Sequelize.Model{};
+class Role extends Sequelize.Model { };
 
 Role.init(
     {
-        id:{
+        id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        description:{
+        description: {
             type: DataTypes.STRING,
-            field : 'description'
+            field: 'description'
         },
+        active: {
+            type: DataTypes.INTEGER
+        }
     },
     {
         sequelize: sequelize, // Aquí pasas tu instancia de Sequelize configurada
