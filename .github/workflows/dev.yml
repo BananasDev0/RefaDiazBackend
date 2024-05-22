@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "."
-          target: "projects/RefaDiaz"
+          target: "RefaDiazBackend"
 
       - name: Ejecutar comandos remotos
         uses: appleboy/ssh-action@master
@@ -31,6 +31,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd projects/RefaDiaz
+            cd RefaDiazBackend
             npm install
             pm2 restart ecosystem.config.cjs
