@@ -3,6 +3,7 @@ import Product from "../models/product.js";
 import { FileConstants } from "../utils/fileConstants.js";
 import { FileService } from "./fileService.js";
 import { ProductCarModelService } from "./productCarModelService.js";
+import { ProductFileService } from "./productFileService.js";
 import { ProductPriceService } from "./productPriceService.js";
 import { ProviderProductService } from "./providerProductService.js";
 
@@ -114,4 +115,44 @@ export class ProductService {
         }
     }
 
+    static async updateProduct(productId, updatedData) {
+        const transaction = await sequelize.transaction();
+        try {
+            let product = await Product.findByPk(productId);
+            
+            if (!product) {
+                await transaction.rollback();
+                return null;
+            }
+    
+            // Update the basic fields of the product
+            await product.update(updatedData, { transaction });
+    
+            // Update relationships with providers using the provided service
+            if (updatedData.providers && updatedData.providers.length > 0) {
+                await ProviderProductService.updateProviderProducts(productId, updatedData.providers, transaction);
+                // ^ Aquí esperamos a que se complete la función dentro de la transacción
+            }
+
+            if(updatedData.prices && updatedData.prices.length > 0) {
+                await ProductPriceService.updateProductPrice(productId, updatedData.prices, transaction);
+            }
+
+            if(updatedData.carModels && updatedData.carModels.length > 0) {
+                await ProductCarModelService.updateProductCarModel(productId, updatedData.carModels, transaction);
+            }
+
+            if (updatedData.files && updatedData.files.length > 0) {
+                await ProductFileService.updateProductFiles([productId],updatedData.files, transaction);
+            }
+    
+            await transaction.commit();
+            return 200;
+
+        } catch (error) {
+            await transaction.rollback();
+            console.error('Error updating product:', error);
+            throw error;
+        }
+    }    
 }

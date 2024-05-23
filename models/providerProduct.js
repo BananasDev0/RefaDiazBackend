@@ -14,7 +14,8 @@ ProviderProduct.init({
             model: 'product',
             key: 'id'
         },
-        field: 'product_id'
+        field: 'product_id',
+        primaryKey: true
     },
     priceId: {
         type: DataTypes.INTEGER,
@@ -23,7 +24,8 @@ ProviderProduct.init({
             model: 'price',
             key: 'id'
         },
-        field: 'price_id'
+        field: 'price_id',
+        primaryKey: true
     },
     providerId: {
         type: DataTypes.INTEGER,
@@ -32,7 +34,8 @@ ProviderProduct.init({
             model: 'provider',
             key: 'id'
         },
-        field: 'provider_id'
+        field: 'provider_id',
+        primaryKey: true
     },
     numSeries: {
         type: DataTypes.STRING,

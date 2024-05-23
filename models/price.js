@@ -15,7 +15,7 @@ Price.init(
             
         },
         cost: {
-            type: DataTypes.DOUBLE,
+            type: DataTypes.DECIMAL(10,2),
             field: 'cost'
         },
         description: {
