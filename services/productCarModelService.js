@@ -85,17 +85,16 @@ export class ProductCarModelService {
             totalPages: Math.ceil(productCarModels.count / limit)
         };
     }
-
-
+    Z
     static async getAllProductCarModels(page = 1, limit = 10, productTypeId = null, searchTerm = '') {
         const offset = (page - 1) * limit;
         const productWhere = {};
-
+    
         // Agregar filtro por productTypeId si se proporciona
         if (productTypeId) {
             productWhere.productTypeId = productTypeId;
         }
-
+    
         // Agregar búsqueda por searchTerm si se proporciona
         if (searchTerm) {
             productWhere[Op.or] = [
@@ -104,7 +103,7 @@ export class ProductCarModelService {
                 })
             ];
         }
-
+    
         let productCarModels = await ProductCarModel.findAndCountAll({
             include: [
                 {
@@ -120,22 +119,37 @@ export class ProductCarModelService {
             limit,
             offset
         });
-
-        let ids = productCarModels.rows.map(pcm => pcm.productId);
+    
+        // Filtrar productos duplicados
+        const uniqueProductsMap = new Map();
+        productCarModels.rows.forEach(pcm => {
+            if (!uniqueProductsMap.has(pcm.product.id)) {
+                uniqueProductsMap.set(pcm.product.id, pcm);
+            }
+        });
+    
+        const uniqueProductCarModels = Array.from(uniqueProductsMap.values());
+    
+        // Obtener los IDs únicos de los productos
+        let ids = uniqueProductCarModels.map(pcm => pcm.productId);
         let files = await FileService.getFiles(ids, FileConstants.ProductImage);
-
-        productCarModels.rows.map(pcm => {
+    
+        // Asociar archivos a los productos únicos
+        uniqueProductCarModels.forEach(pcm => {
             let filteredFiles = files.filter(f => f.objectId === pcm.productId);
             if (pcm.product) {
                 pcm.product.setDataValue('files', filteredFiles);
             }
         });
-
+    
+        // Ajustar el conteo total basado en productos únicos
+        const totalCount = uniqueProductsMap.size;
+    
         return {
-            data: productCarModels.rows,
-            count: productCarModels.count,
+            data: uniqueProductCarModels,
+            count: totalCount,
             currentPage: page,
-            totalPages: Math.ceil(productCarModels.count / limit)
+            totalPages: Math.ceil(totalCount / limit)
         };
     }
 
