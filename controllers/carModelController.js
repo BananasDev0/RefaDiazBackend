@@ -135,7 +135,7 @@ const getAllCarModelsProducts = async (req, res) => {
         const productTypeId = req.query.productTypeId;
         const searchTerm = req.query.searchTerm;
         const page = parseInt(req.query.page) || 1;  // Establece un valor por defecto de 1 si no se proporciona
-        const limit = parseInt(req.query.limit) || 10;  // Establece un valor por defecto de 10 si no se proporciona
+        const limit = parseInt(req.query.limit) || 20;  // Establece un valor por defecto de 10 si no se proporciona
 
         const productCarModels = await ProductCarModelService.getAllProductCarModels(page, limit, productTypeId, searchTerm);
 

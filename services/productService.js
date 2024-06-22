@@ -125,6 +125,8 @@ export class ProductService {
                 return null;
             }
 
+            await product.update(updatedData, { transaction });
+
             await this._deleteExcludedResources(productId, updatedData, transaction);
     
             await this._updateCreateNestedResources(productId, updatedData, transaction);
