@@ -49,4 +49,30 @@ export class FileService {
 
         return createdFiles;
     }
+
+    static async getExcludedFiles(objectId, fileTypeId, excludedFilesIds) {
+        const files = await File.findAll({
+            where: {
+                objectId,
+                fileTypeId,
+                id: {
+                    [Op.notIn]: excludedFilesIds
+                }
+            }
+        });
+        return files;
+    }
+
+    static async deleteBulkFiles(objectId, fileTypeId, fileIds, transaction) {
+        await File.destroy({
+            where: {
+                objectId,
+                fileTypeId,
+                id: {
+                    [Op.in]: fileIds
+                }
+            },
+            transaction // include transaction in the destroy operation
+        });
+    }
 }

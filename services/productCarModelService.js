@@ -89,12 +89,12 @@ export class ProductCarModelService {
     static async getAllProductCarModels(page = 1, limit = 10, productTypeId = null, searchTerm = '') {
         const offset = (page - 1) * limit;
         const productWhere = {};
-    
+
         // Agregar filtro por productTypeId si se proporciona
         if (productTypeId) {
             productWhere.productTypeId = productTypeId;
         }
-    
+
         // Agregar búsqueda por searchTerm si se proporciona
         if (searchTerm) {
             productWhere[Op.or] = [
@@ -103,7 +103,7 @@ export class ProductCarModelService {
                 })
             ];
         }
-    
+
         let productCarModels = await ProductCarModel.findAndCountAll({
             include: [
                 {
@@ -119,7 +119,7 @@ export class ProductCarModelService {
             limit,
             offset
         });
-    
+
         // Filtrar productos duplicados
         const uniqueProductsMap = new Map();
         productCarModels.rows.forEach(pcm => {
@@ -127,13 +127,13 @@ export class ProductCarModelService {
                 uniqueProductsMap.set(pcm.product.id, pcm);
             }
         });
-    
+
         const uniqueProductCarModels = Array.from(uniqueProductsMap.values());
-    
+
         // Obtener los IDs únicos de los productos
         let ids = uniqueProductCarModels.map(pcm => pcm.productId);
         let files = await FileService.getFiles(ids, FileConstants.ProductImage);
-    
+
         // Asociar archivos a los productos únicos
         uniqueProductCarModels.forEach(pcm => {
             let filteredFiles = files.filter(f => f.objectId === pcm.productId);
@@ -141,10 +141,10 @@ export class ProductCarModelService {
                 pcm.product.setDataValue('files', filteredFiles);
             }
         });
-    
+
         // Ajustar el conteo total basado en productos únicos
         const totalCount = uniqueProductsMap.size;
-    
+
         return {
             data: uniqueProductCarModels,
             count: totalCount,
@@ -153,7 +153,7 @@ export class ProductCarModelService {
         };
     }
 
-    static async updateProductCarModel(productId, updatedData, transaction) {
+    static async updateBulkProductCarModels(productId, newProductCarModels, transaction) {
         try {
             // Buscar todos los productos del proveedor asociados a este producto
             let productCarModels = await ProductCarModel.findAll({
@@ -161,23 +161,45 @@ export class ProductCarModelService {
                 include: [{ model: CarModel, as: 'carModel' }],
                 transaction
             });
-    
+
             for (let productCarModel of productCarModels) {
                 // Actualizar los campos del producto del proveedor
-                const carModelUpdateData = updatedData.find(pcUpdated => pcUpdated.providerId === productCarModel.providerId);
+                const carModelUpdateData = newProductCarModels.find(ncm => ncm.carModelId === productCarModel.carModelId);
                 if (carModelUpdateData) {
                     await productCarModel.update(carModelUpdateData, { transaction });
-    
-                    if (productCarModel.carModel) {
-                        await productCarModel.carModel.update(carModelUpdateData.carModel, { transaction });
-                    }
                 }
             }
-    
+
             return productCarModels;
         } catch (error) {
             console.error('Error updating provider products:', error);
             throw error;
         }
+    }
+
+    static async deleteBulkProductCarModels(productId, carModelIds, transaction) {
+        try {
+            await ProductCarModel.destroy({
+                where: {
+                    productId,
+                    carModelId: carModelIds
+                },
+                transaction
+            });
+        } catch (error) {
+            console.error('Error deleting provider products:', error);
+            throw error;
+        }
+    }
+
+    static getExcludedCarModels(productId, productCarModelsIds) {
+        return ProductCarModel.findAll({
+            where: {
+                productId,
+                carModelId: {
+                    [Op.notIn]: productCarModelsIds
+                }
+            }
+        });
     }
 }

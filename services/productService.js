@@ -124,27 +124,10 @@ export class ProductService {
                 await transaction.rollback();
                 return null;
             }
+
+            await this._deleteExcludedResources(productId, updatedData, transaction);
     
-            // Update the basic fields of the product
-            await product.update(updatedData, { transaction });
-    
-            // Update relationships with providers using the provided service
-            if (updatedData.providers && updatedData.providers.length > 0) {
-                await ProviderProductService.updateProviderProducts(productId, updatedData.providers, transaction);
-                // ^ Aquí esperamos a que se complete la función dentro de la transacción
-            }
-
-            if(updatedData.prices && updatedData.prices.length > 0) {
-                await ProductPriceService.updateProductPrice(productId, updatedData.prices, transaction);
-            }
-
-            if(updatedData.carModels && updatedData.carModels.length > 0) {
-                await ProductCarModelService.updateProductCarModel(productId, updatedData.carModels, transaction);
-            }
-
-            if (updatedData.files && updatedData.files.length > 0) {
-                await ProductFileService.updateProductFiles([productId],updatedData.files, transaction);
-            }
+            await this._updateCreateNestedResources(productId, updatedData, transaction);
     
             await transaction.commit();
             return 200;
@@ -154,5 +137,69 @@ export class ProductService {
             console.error('Error updating product:', error);
             throw error;
         }
-    }    
+    }
+    
+    static async _deleteExcludedResources(productId, productData, transaction) {
+        try {
+            let excludedCarModels = await ProductCarModelService.getExcludedCarModels(productId, productData.carModels.map(cm => cm.carModelId));
+            let excludedCarModelsIds = excludedCarModels.map(em => em.carModelId);
+            if (excludedCarModels && excludedCarModels.length > 0) {
+                await ProductCarModelService.deleteBulkProductCarModels(productId, excludedCarModelsIds, transaction);
+            }
+
+            let excludedPrices = await ProductPriceService.getExcludedPrices(productId, productData.prices.map(p => p.priceId));
+            let excludedPricesIds = excludedPrices.map(ep => ep.priceId);
+            if (excludedPrices && excludedPrices.length > 0) {
+                await ProductPriceService.deleteBulkProductPrices(productId, excludedPricesIds, transaction);
+            }
+
+            let excludedFiles = await FileService.getExcludedFiles(productId, FileConstants.ProductImage ,productData.files.map(f => f.id));
+            let excludedFilesIds = excludedFiles.map(ef => ef.id);
+            if (excludedFiles && excludedFiles.length > 0) {
+                await FileService.deleteBulkFiles(productId, FileConstants.ProductImage ,excludedFilesIds, transaction);
+            }
+        } catch (error) {
+            console.error('Error deleting excluded resources:', error);
+            throw error;
+        }
+    }
+
+    static async _updateCreateNestedResources(productId, updatedData, transaction) {
+        try {
+            if (updatedData.carModels && updatedData.carModels.length > 0) {
+                let updateProductCarModels = updatedData.carModels.filter(cm => cm.productId);
+                await ProductCarModelService.updateBulkProductCarModels(productId, updateProductCarModels, transaction);
+
+                let createProductCarModels = updatedData.carModels.filter(cm => !cm.productId);
+                for (let productCarModel of createProductCarModels) {
+                    await ProductCarModelService.associateCarModelToProduct(productId, productCarModel, transaction);
+                }
+            }
+
+            if (updatedData.prices && updatedData.prices.length > 0) {
+                let updateProductPrices = updatedData.prices.filter(p => p.productId);
+                await ProductPriceService.updateBulkProductPrices(productId, updateProductPrices, transaction);
+
+                let createProductPrices = updatedData.prices.filter(p => !p.productId);
+                for (let productPrice of createProductPrices) {
+                    await ProductPriceService.associatePriceToProduct(productId, productPrice, transaction);
+                }
+            }
+
+            if (updatedData.files && updatedData.files.length > 0) {
+                let updateFiles = updatedData.files.filter(f => f.id);
+                for (let file of updateFiles) {
+                    await FileService.updateFile(file.id, file, transaction);
+                }
+
+                let createFiles = updatedData.files.filter(f => !f.id);
+                for (let file of createFiles) {
+                    await FileService.createFile({ ...file, objectId: productId }, transaction);
+                }
+            }
+        } catch (error) {
+            console.error('Error updating nested resources:', error);
+            throw error;
+        }
+    }
 }

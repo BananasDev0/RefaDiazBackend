@@ -52,5 +52,30 @@ export class ProviderProductService {
             throw error;
         }
     }
+
+    static async deleteBulkProviderProducts(productId, providerIds, transaction) {
+        try {
+            await ProviderProduct.destroy({
+                where: {
+                    productId,
+                    providerId: providerIds
+                },
+                transaction
+            });
+        } catch (error) {
+            console.error('Error deleting provider products:', error);
+            throw error;
+        }
+    }
+
+    static async getExcludedProviders(productId, providerIds) {
+        return await Provider.findAll({
+            where: {
+                id: {
+                    [Op.notIn]: providerIds
+                }
+            }
+        });
+    }
     
 }
