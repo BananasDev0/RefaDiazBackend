@@ -1,5 +1,6 @@
 import File from "../models/file.js";
 import { Op } from 'sequelize';
+import { StorageService } from "./storageService.js";
 
 export class FileService {
     static async getFile(objectId, fileTypeId) {
@@ -50,20 +51,24 @@ export class FileService {
         return createdFiles;
     }
 
-    static async getExcludedFiles(objectId, fileTypeId, excludedFilesIds) {
+    static async getExcludedFiles(objectId, fileTypeId, includedFilesIds) {
         const files = await File.findAll({
             where: {
                 objectId,
                 fileTypeId,
                 id: {
-                    [Op.notIn]: excludedFilesIds
+                    [Op.notIn]: includedFilesIds
                 }
             }
         });
         return files;
     }
 
-    static async deleteBulkFiles(objectId, fileTypeId, fileIds, transaction) {
+    static async deleteBulkFiles(objectId, fileTypeId, files, transaction) {
+        let fileIds = files.map(f => f.id);
+
+        await StorageService.deleteBulkStorageFiles(files.map(f => f.storagePath.replace(/^\//, '')));
+
         await File.destroy({
             where: {
                 objectId,

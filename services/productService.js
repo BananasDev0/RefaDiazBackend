@@ -156,9 +156,8 @@ export class ProductService {
             }
 
             let excludedFiles = await FileService.getExcludedFiles(productId, FileConstants.ProductImage ,productData.files.map(f => f.id));
-            let excludedFilesIds = excludedFiles.map(ef => ef.id);
             if (excludedFiles && excludedFiles.length > 0) {
-                await FileService.deleteBulkFiles(productId, FileConstants.ProductImage ,excludedFilesIds, transaction);
+                await FileService.deleteBulkFiles(productId, FileConstants.ProductImage ,excludedFiles, transaction);
             }
         } catch (error) {
             console.error('Error deleting excluded resources:', error);
