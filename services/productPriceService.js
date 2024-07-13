@@ -50,35 +50,6 @@ export class ProductPriceService {
         }
     }
 
-    static async updateProductPrice(productId, updatedData, transaction) {
-        try {
-            // Buscar todos los precios de productos asociados a este producto
-            let productPrices = await ProductPrice.findAll({
-                where: { productId },
-                include: [{ model: Price, as: 'price' }],
-                transaction
-            });
-    
-            for (let productPrice of productPrices) {
-                // Actualizar los campos del precio del producto
-                const priceUpdateData = updatedData.find(ppUpdated => ppUpdated.priceId === productPrice.priceId);
-                if (priceUpdateData) {
-                    await productPrice.update(priceUpdateData, { transaction });
-
-                    if (priceUpdateData.price) {
-                        await productPrice.price.update(priceUpdateData.price, { transaction });
-                    }
-                }
-                
-            }
-    
-            return productPrices;
-        } catch (error) {
-            console.error('Error updating product prices:', error);
-            throw error;
-        }
-    }
-
     static async getExcludedPrices(productId, productPricesIds) {
         return ProductPrice.findAll({
             where: {
