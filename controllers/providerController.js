@@ -1,8 +1,12 @@
 import Provider from '../models/provider.js';
-
 const getAll = async (req, res) => {
     try {
         const { page, limit } = req.query;
+
+        if (!page || !limit) {
+            const providers = await Provider.findAll();
+            return res.status(200).send({ providers: providers });
+        }
 
         const offset = (parseInt(page) - 1) * parseInt(limit);
         const totalCount = await Provider.count();

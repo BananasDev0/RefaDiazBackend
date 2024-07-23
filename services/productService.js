@@ -158,6 +158,12 @@ export class ProductService {
             if (excludedFiles && excludedFiles.length > 0) {
                 await FileService.deleteBulkFiles(productId, FileConstants.ProductImage ,excludedFiles, transaction);
             }
+
+            let excludedProviderProducts = await ProviderProductService.getExcludedProviderProducts(productId, productData.providers.map(pp => pp.providerId));
+            let excludedProviderProductsIds = excludedProviderProducts.map(epp => epp.providerId);
+            if (excludedProviderProducts && excludedProviderProducts.length > 0) {
+                await ProviderProductService.deleteBulkProviderProducts(productId, excludedProviderProductsIds, transaction);
+            }
         } catch (error) {
             console.error('Error deleting excluded resources:', error);
             throw error;
@@ -195,6 +201,16 @@ export class ProductService {
                 let createFiles = updatedData.files.filter(f => !f.id);
                 for (let file of createFiles) {
                     await FileService.createFile({ ...file, objectId: productId }, transaction);
+                }
+            }
+
+            if (updatedData.providers && updatedData.providers.length > 0) {
+                let updateProviderProducts = updatedData.providers.filter(pp => pp.productId);
+                await ProviderProductService.updateBulkProviderProducts(productId, updateProviderProducts, transaction);
+
+                let createProviderProducts = updatedData.providers.filter(pp => !pp.productId);
+                for (let providerProduct of createProviderProducts) {
+                    await ProviderProductService.associateProviderToProduct(productId, providerProduct, transaction);
                 }
             }
         } catch (error) {
