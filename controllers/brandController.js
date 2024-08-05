@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import Brand from "../models/brand.js";
 import CarModel from "../models/carModel.js"; // Cambio aquí de VehicleModel a CarModel
 import { BrandService } from "../services/brandService.js";
@@ -80,10 +81,15 @@ const deleteBrand = async (req, res) => {
 const getBrandCarModels = async (req, res) => {
     try {
         const brandId = req.params.id;
+        const { name } = req.query;
+
         const brand = await Brand.findByPk(brandId, {
             include: [{
                 model: CarModel,
-                as: 'carModels'
+                as: 'carModels',
+                where: {
+                    ...(name && { name: { [Op.iLike]: `%${name}%` } }) // Usar iLike para ignorar capitalización
+                }
             }]
         });
 
@@ -97,6 +103,7 @@ const getBrandCarModels = async (req, res) => {
         console.error('Error al recuperar los modelos de carros de la marca:', error);
         res.status(500).send(error.message);
     }
-}
+};
+
 
 export { createNewBrand, getAll, deleteBrand, getBrand, updateBrand, getBrandCarModels }; // Cambiado a getBrandCarModels
