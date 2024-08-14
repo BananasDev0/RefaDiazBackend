@@ -11,9 +11,6 @@ export class UserService {
                 include: [{
                     model: Person,
                     as: 'person'
-                },{
-                    model:Role,
-                    as: 'role'
                 }
             ], // Indica a Sequelize que incluya el modelo Person en la operación
                 transaction: t
