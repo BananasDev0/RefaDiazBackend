@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAll, getProduct, deleteProduct, createProduct, updateProduct, createProductFiles } from '../controllers/productController.js';
+import { getAll, getProduct, deleteProduct, createProduct, updateProduct } from '../controllers/productController.js';
 
 // Crea una instancia del router de Express
 const productRouter = express.Router();
@@ -11,7 +11,6 @@ productRouter.get('/products', getAll);
 productRouter.get('/product/:id', getProduct);
 
 productRouter.post('/product', createProduct);
-productRouter.post('/product/:id/files', createProductFiles);
 
 productRouter.put('/product/:id', updateProduct);
 

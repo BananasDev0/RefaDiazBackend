@@ -1,11 +1,11 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
 
-class Product extends Sequelize.Model{};
+class Product extends Sequelize.Model { };
 
 Product.init(
     {
-        id:{
+        id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
@@ -18,9 +18,20 @@ Product.init(
             type: DataTypes.STRING,
             field: 'comments'
         },
+        dpi: {
+            type: DataTypes.STRING,
+            field: 'dpi'
+        },
+        productTypeId: {
+            type: DataTypes.INTEGER,
+            field: 'product_type_id'
+        },
+        stockCount: {
+            type: DataTypes.INTEGER,
+            field: 'stock_count'
+        },
         active: {
             type: DataTypes.INTEGER,
-            defaultValue: 1
         },
     },
     {
