@@ -2,9 +2,9 @@ import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
 import Brand from './brand.js';
 
-class VehicleModel extends Sequelize.Model {}
+class CarModel extends Sequelize.Model {}
 
-VehicleModel.init(
+CarModel.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -30,15 +30,15 @@ VehicleModel.init(
   },
   {
     sequelize,
-    modelName: 'VehicleModel',
-    tableName: 'vehicle_model', 
+    modelName: 'CarModel',
+    tableName: 'car_model', 
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at'
   }
 );
 
-VehicleModel.belongsTo(Brand, { foreignKey: 'id', as: 'brand' });
-Brand.hasMany(VehicleModel, { foreignKey: 'brand_id', as: 'vehicleModel' });
+CarModel.belongsTo(Brand, { foreignKey: 'id', as: 'brand' });
+Brand.hasMany(CarModel, { foreignKey: 'brandId', as: 'carModels' });
 
-export default VehicleModel;
+export default CarModel;

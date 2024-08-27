@@ -1,11 +1,11 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from '../config/dbConnection.js';
 
-class Product extends Sequelize.Model{};
+class Product extends Sequelize.Model { };
 
 Product.init(
     {
-        id:{
+        id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
@@ -14,29 +14,33 @@ Product.init(
             type: DataTypes.STRING,
             field: 'name'
         },
-       // dpi: {
-       //     type: DataTypes.STRING
-       // },
-        brandId: {
-            type: DataTypes.INTEGER,
-            field: 'brand_id'
-        },
-        imageUrl: {
+        comments: {
             type: DataTypes.STRING,
-            field: 'image_url'
+            field: 'comments'
+        },
+        dpi: {
+            type: DataTypes.STRING,
+            field: 'dpi'
+        },
+        productTypeId: {
+            type: DataTypes.INTEGER,
+            field: 'product_type_id'
+        },
+        stockCount: {
+            type: DataTypes.INTEGER,
+            field: 'stock_count'
         },
         active: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
         },
     },
     {
-        sequelize: sequelize, // Aquí pasas tu instancia de Sequelize configurada
-        modelName: 'product', // El nombre del modelo en singular
-        tableName: 'product', // El nombre de la tabla en la base de datos
+        sequelize: sequelize,
+        modelName: 'product',
+        tableName: 'product',
         timestamps: false,
         createdAt: 'created_at',
         updatedAt: 'updated_at'
     }
 );
 export default Product;
-

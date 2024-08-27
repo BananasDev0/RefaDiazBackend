@@ -1,17 +1,4 @@
-import firebaseAdmin from 'firebase-admin';
-import dotenv from 'dotenv';
-
-dotenv.config({
-    path: `.env.${process.env.NODE_ENV}`
-});
-
-console.log(process.env.FIREBASE_JSON_ADMIN)
-
-const serviceAccount = process.env.FIREBASE_JSON_ADMIN;
-
-firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert(serviceAccount)
-});
+import { firebaseInstance } from "../config/fireBaseConfig.js";
 
 const firebaseTokenVerification = async (req, res, next) => {
     const token = req.header('Authorization');
@@ -21,7 +8,7 @@ const firebaseTokenVerification = async (req, res, next) => {
     }
 
     try {
-        const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
+        const decodedToken = await firebaseInstance.auth().verifyIdToken(token);
         req.user = decodedToken;
         next();
     } catch(error) {
