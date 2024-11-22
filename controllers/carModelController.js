@@ -4,20 +4,36 @@ import Brand from "../models/brand.js";
 import sequelize from '../config/dbConnection.js';
 import { ProductCarModelService } from "../services/productCarModelService.js";
 
+// controllers/carModelController.js
+
+import { CarModelService } from "../services/carModelService.js";
+
 const createCarModel = async (req, res) => {
     try {
         const carData = req.body;
-        const car = await sequelize.transaction(async (t) => {
-            const newCar = await CarModel.create(carData, {
-                transaction: t
+        const forceCreation = req.query.force === 'true';
+        
+        const result = await CarModelService.createCarModel(carData, forceCreation);
+        
+        if (result.created) {
+            res.status(201).json({
+                success: true,
+                message: result.message,
+                data: result.newModel
             });
-            return newCar;
-        });
-
-        res.status(201).send(car.toJSON());
+        } else {
+            res.status(409).json({
+                success: false,
+                message: result.message,
+                similarModel: result.similarModel
+            });
+        }
     } catch (error) {
-        console.error('Error creating new car:', error);
-        res.status(500).send('Error creating new car: ' + error.message);
+        console.error('Error al crear nuevo modelo de coche:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al crear nuevo modelo de coche: ' + error.message
+        });
     }
 };
 

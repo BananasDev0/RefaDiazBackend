@@ -6,6 +6,7 @@ INSERT INTO file_type (name) VALUES ('Brand Image');
 INSERT INTO file_type (name) VALUES ('Product Image');
 
 INSERT INTO product_type (name) VALUES ('RADIATOR');
+INSERT INTO product_type (name) VALUES ('CAP');
 
 
 INSERT INTO brand (name, brand_type_id) VALUES

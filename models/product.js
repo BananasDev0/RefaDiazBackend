@@ -33,6 +33,11 @@ Product.init(
         active: {
             type: DataTypes.INTEGER,
         },
+        parentProductId: {
+            type: DataTypes.INTEGER,
+            field: 'parent_product_id',
+            allowNull: true
+        }
     },
     {
         sequelize: sequelize,

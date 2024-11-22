@@ -5,6 +5,7 @@ import { FileService } from "./fileService.js";
 import { ProductCarModelService } from "./productCarModelService.js";
 import { ProductPriceService } from "./productPriceService.js";
 import { ProviderProductService } from "./providerProductService.js";
+import { Op } from "sequelize";
 
 export class ProductService {
     static async getAllProducts(page = 1, limit = 10, productTypeId = null) {
@@ -63,7 +64,25 @@ export class ProductService {
         let carModels = await ProductCarModelService.getProductCarModels(productId);
         product.setDataValue('carModels', carModels);
 
+        let childProducts = await this.getProductChildProducts(product);
+        product.setDataValue('childProducts', childProducts);
+
         return product;
+    }
+
+    static async getProductChildProducts (product) {
+        let childProducts = await Product.findAll({
+            where: {
+                parentProductId: product.id
+            }
+        });
+
+        for (let childProduct of childProducts) {
+            let files = await FileService.getFiles([childProduct.id], FileConstants.ProductImage);
+            childProduct.setDataValue('files', files);
+        }
+        
+        return childProducts;
     }
 
     static async createProduct(productData) {
@@ -142,6 +161,12 @@ export class ProductService {
     
     static async _deleteExcludedResources(productId, productData, transaction) {
         try {
+            let excludedChildProducts = await this.getExcludedChildProducts(productId, productData.childProducts.map(cp => cp.id));
+            let excludedChildProductsIds = excludedChildProducts.map(ep => ep.id);
+            if (excludedChildProducts && excludedChildProducts.length > 0) {
+                await this.deleteBulkChildProducts(productId, excludedChildProductsIds, transaction);
+            }
+
             let excludedCarModels = await ProductCarModelService.getExcludedCarModels(productId, productData.carModels.map(cm => cm.carModelId));
             let excludedCarModelsIds = excludedCarModels.map(em => em.carModelId);
             if (excludedCarModels && excludedCarModels.length > 0) {
@@ -217,5 +242,28 @@ export class ProductService {
             console.error('Error updating nested resources:', error);
             throw error;
         }
+    }
+
+    static getExcludedChildProducts(productId, childProductsIds) {
+        return Product.findAll({
+            where: {
+                parentProductId: productId,
+                id: {
+                    [Op.notIn]: childProductsIds
+                }
+            }
+        });
+    }
+
+    static deleteBulkChildProducts(productId, childProductsIds, transaction) {
+        return Product.destroy({
+            where: {
+                parentProductId: productId,
+                id: {
+                    [Op.in]: childProductsIds
+                }
+            },
+            transaction
+        });
     }
 }
